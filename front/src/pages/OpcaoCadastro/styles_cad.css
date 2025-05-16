@@ -63,20 +63,26 @@ html {
 
 .botao {
     width: 480px;
-    padding: 10px 110px;
+    height: 80px;
+    /* altura fixa para melhor alinhamento */
+    padding: 0 40px;
+    /* padding horizontal apenas */
     border: none;
     border-radius: 40px;
     background-color: #fff;
     box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.6);
-    font-size: clamp(30px, 15vw, 45px);
+    font-size: clamp(28px, 2vw, 40px);
     font-weight: bold;
     font-family: 'Poppins', sans-serif;
     color: #333;
     display: flex;
     align-items: center;
+    /* centraliza verticalmente */
     justify-content: space-between;
+    /* espaçamento entre texto e ícone */
     cursor: pointer;
     transition: 0.3s;
+    gap: 20px;
 }
 
 .botao:hover {
@@ -101,17 +107,18 @@ html {
 
 .icone_prof,
 .icone_aluno {
-    width: 45px;
-    height: 45px;
-    margin-left: 1px;
+    width: 65px;
+    height: 65px;
+    object-fit: contain;
+    margin-left: 0;
+    /* remove espaçamento desnecessário */
 }
 
-.botao-final {
+div.conteudo-direito .botao-final {
     background-color: #800080;
-    width: 300px;
-    color: white;
-    padding: 20px 30px;
-    font-size: 28px;
+    width: 390px;
+    padding: 26px 40px;
+    font-size: 32px;
     font-family: 'Poppins', sans-serif;
     font-weight: bold;
     border: none;
@@ -120,6 +127,8 @@ html {
     cursor: pointer;
     transition: 0.3s;
     margin-top: 50px;
+    display: block;
+    align-self: center;
 }
 
 .botao-final:hover {

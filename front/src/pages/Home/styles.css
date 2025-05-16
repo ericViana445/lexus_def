@@ -80,23 +80,30 @@ body {
 
 .botoes {
     display: flex;
-    gap: 20px;
+    gap: 50px;
     flex-wrap: wrap;
     margin-top: 60px;
 }
 
 .botao {
-    padding: clamp(10px, 1.2vw, 18px) clamp(20px, 2vw, 32px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #226680;
+    color: white;
+    width: 300px;
+    height: 80px;
+    padding: 0 40px;
+    border: none;
     border-radius: 50px;
+    font-size: 26px;
     font-weight: 600;
-    font-size: clamp(25px, 1.7vw, 35px);
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
     text-align: center;
     text-decoration: none;
-    border: none;
-    cursor: pointer;
-    min-width: clamp(160px, 25vw, 300px);
-    display: inline-block;
-    transition: transform 0.3s;
+    box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
 }
 
 .botao.cadastrar {
@@ -105,7 +112,7 @@ body {
 }
 
 .botao.logar {
-    background-color: #800080;
+    background-color: #226680;
     color: white;
 }
 
