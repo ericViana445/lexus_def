@@ -1,12 +1,11 @@
 import './styles.css';
-import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import lexus from '../../assets/lexus.png';
 import eyes from '../../assets/eyes.png';
 import descricao_imagem from '../../assets/descricao_imagem.png';
-import { Link } from 'react-router-dom';
 
 function Home() {
-  const [count, setCount] = useState(0);
+  const navigate = useNavigate();
 
   return (
     <div className="container">
@@ -24,8 +23,12 @@ function Home() {
           </p>
 
           <div className="botoes">
-            <Link to="/cadastro" className="botao cadastrar">Cadastrar-se</Link>
-            <Link to="#" className="botao logar">Logar</Link>
+            <div className="botao cadastrar" onClick={() => navigate('/cadastro')}>
+              Cadastrar-se
+            </div>
+            <div className="botao logar" onClick={() => navigate('/login')}>
+              Logar
+            </div>
           </div>
         </div>
 
