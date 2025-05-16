@@ -1,0 +1,186 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+/* Container ocupa toda a tela */
+
+.container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+/* Área principal dividida em colunas */
+
+.letreiro {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    gap: 60px;
+}
+
+
+/* Coluna do texto */
+
+.texto {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.titulo {
+    font-size: clamp(28px, 3vw, 60px);
+    font-weight: bold;
+    font: Poppins;
+    color: #800080;
+    margin-bottom: 0px;
+    margin-top: 0px;
+}
+
+.logo {
+    width: clamp(180px, 40vw, 640px);
+    margin-top: 10px;
+}
+
+.subtitulo {
+    font-size: clamp(30px, 3vw, 70px);
+    font: Poppins;
+    color: #A460A4;
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+.slogan {
+    font-size: clamp(24px, 1.7vw, 44px);
+    color: #53889C;
+    font-weight: 600;
+    font: Poppins;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+
+/* Botões */
+
+.botoes {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-top: 60px;
+}
+
+.botao {
+    padding: clamp(10px, 1.2vw, 18px) clamp(20px, 2vw, 32px);
+    border-radius: 50px;
+    font-weight: 600;
+    font-size: clamp(25px, 1.7vw, 35px);
+    text-align: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    min-width: clamp(160px, 25vw, 300px);
+    display: inline-block;
+    transition: transform 0.3s;
+}
+
+.botao.cadastrar {
+    background-color: #226680;
+    color: white;
+}
+
+.botao.logar {
+    background-color: #800080;
+    color: white;
+}
+
+.botao:hover {
+    transform: scale(1.05);
+}
+
+
+/* Coluna da imagem */
+
+.imagem-bloco {
+    flex: 1;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-end;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+.imagem {
+    width: 100%;
+    max-width: 100%;
+}
+
+.foto {
+    width: 100%;
+    height: auto;
+    border-radius: 30px;
+    margin-bottom: 16px;
+}
+
+
+/* Imagem da descrição */
+
+.descricao-imagem {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
+.foto-descricao {
+    height: auto;
+    max-width: clamp(120px, 15vw, 240px);
+}
+
+
+/* Responsividade para tablets e celulares */
+
+@media (max-width: 1024px) {
+    .letreiro {
+        flex-direction: column;
+        align-items: center;
+        gap: 40px;
+        text-align: center;
+    }
+    .texto {
+        align-items: center;
+        padding: 20px;
+    }
+    .botoes {
+        justify-content: center;
+    }
+    .botao {
+        width: 80%;
+        max-width: 280px;
+    }
+    .imagem-bloco {
+        align-items: center;
+        padding: 20px;
+    }
+    .descricao-imagem {
+        justify-content: center;
+        padding-right: 0;
+    }
+}
