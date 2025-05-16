@@ -1,0 +1,20 @@
+[
+    {
+        "nome": "defala",
+        "email": "defala@gmail.com",
+        "senha": "123456",
+        "cargo": "aluno"
+    },
+    {
+        "nome": "defala",
+        "email": "safada@gmail.com",
+        "senha": "123456",
+        "cargo": "professor"
+    },
+    {
+        "nome": "defala",
+        "email": "usuarioteste@gmail.com",
+        "senha": "123456",
+        "cargo": "professor"
+    }
+]
