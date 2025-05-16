@@ -1,7 +1,7 @@
 import './styles.css';
 import { useState } from 'react';
-import lexus from '../assets/lexus.png';
-import eyes from '../assets/eyes.png';
+import lexus from '../../assets/lexus.png';
+import eyes from '../../assets/eyes.png';
 import descricao_imagem from '../../assets/descricao_imagem.png';
 import { Link } from 'react-router-dom';
 
