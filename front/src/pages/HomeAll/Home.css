@@ -18,10 +18,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #0077a2;
+  background-color: #226680;
   padding: 15px 20px;
   color: white;
-  border-radius: 5px 5px 0 0;
 }
 
 .logo h1 {
@@ -83,7 +82,7 @@
 
 .tab.active {
   background-color: #d0e0e6;
-  color: #0077a2;
+  color: #226680;
   font-weight: bold;
 }
 
@@ -146,6 +145,7 @@
 
 .news-content p {
   font-size: 14px;
+  color: black;
   line-height: 1.4;
   margin-bottom: 15px;
   height: 120px;
@@ -153,7 +153,7 @@
 }
 
 .read-more-btn {
-  background-color: #0077a2;
+  background-color: #226680;
   color: white;
   border: none;
   padding: 5px 15px;
@@ -163,7 +163,7 @@
 }
 
 .read-more-btn:hover {
-  background-color: #005d7f;
+  background-color: #226680;
 }
 
 /* Responsive adjustments */
@@ -191,5 +191,401 @@
   .user-profile {
     align-items: flex-start;
     width: 100%;
+  }
+  .news-content {
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .news-description {
+    font-size: 14px;
+    line-height: 1.4;
+    margin-top: 10px;
+    color: #444;
+    text-align: center;
+  }
+
+  .read-more-btn {
+    background-color: #226680;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 14px;
+  }
+}
+
+/* Adicionando responsividade extra para dispositivos muito pequenos */
+@media (max-width: 480px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+
+  .logo h1 {
+    font-size: 22px;
+  }
+
+  .main-nav ul {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .secondary-nav {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px;
+  }
+
+  .tabs {
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+  }
+
+  .tab {
+    width: 100%;
+    text-align: left;
+  }
+
+  .user-info {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .user-greeting {
+    font-size: 14px;
+  }
+
+  .news-content p {
+    height: auto;
+  }
+
+  .read-more-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Melhorias para telas muito grandes */
+@media (min-width: 1440px) {
+  .news-grid {
+    grid-template-columns: repeat(5, 1fr);
+  }
+
+  .news-image img {
+    height: 200px;
+  }
+
+  .news-content p {
+    font-size: 16px;
+    height: 140px;
+  }
+
+  .read-more-btn {
+    font-size: 16px;
+  }
+}
+
+.foto-lateral {
+  height: 50px; /* ou 40px, conforme o visual desejado */
+  width: auto; /* mantém a proporção da imagem */
+}
+
+/* Add these styles for the Mural tab */
+.mural-container {
+  width: 100%;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.mural-header {
+  background-color: #5c8a9d;
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-image: url("/placeholder.svg?height=50&width=100");
+  background-repeat: no-repeat;
+  background-position: right center;
+  background-size: contain;
+}
+
+.mural-header h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin: 0;
+}
+
+.mural-content {
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.post-input,
+.comment-input {
+  display: flex;
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+  align-items: center;
+}
+
+.post-text-input,
+.comment-text-input {
+  flex: 1;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 20px;
+  background-color: #f5f5f5;
+  margin-left: 10px;
+  font-size: 14px;
+}
+
+.post-text-input:focus,
+.comment-text-input:focus {
+  outline: none;
+  background-color: #eee;
+}
+
+.user-avatar-small {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.user-avatar-small img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.post-item {
+  padding: 15px;
+  border-bottom: 1px solid #eee;
+}
+
+.post-header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.post-info {
+  margin-left: 10px;
+}
+
+.post-author {
+  font-weight: bold;
+  color: black;
+  font-size: 16px;
+}
+
+.post-date {
+  font-size: 12px;
+  color: #777;
+}
+
+.post-body {
+  padding-left: 50px;
+  font-size: 14px;
+  color: black;
+  line-height: 1.5;
+}
+
+.comment-input-container {
+  display: flex;
+  flex: 1;
+  margin-left: 10px;
+  background-color: #f5f5f5;
+  border-radius: 20px;
+  padding-right: 5px;
+}
+
+.comment-text-input {
+  background-color: transparent;
+  margin-left: 0;
+}
+
+.send-button {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background-color: #7e3acf;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+}
+
+.send-button svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Responsive adjustments for Mural */
+@media (max-width: 768px) {
+  .mural-header {
+    padding: 15px;
+  }
+
+  .mural-header h2 {
+    font-size: 20px;
+  }
+
+  .post-body {
+    padding-left: 0;
+    color: black;
+    margin-top: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .mural-header h2 {
+    font-size: 18px;
+  }
+
+  .post-input,
+  .comment-input {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .post-text-input,
+  .comment-input-container {
+    margin-left: 0;
+    margin-top: 10px;
+    width: 100%;
+  }
+
+  .user-avatar-small {
+    margin-bottom: 10px;
+  }
+}
+
+/* Turmas tab styles */
+.turmas-container {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.turmas-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.turma-card {
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: white;
+  height: 200px;
+  display: flex;
+  flex-direction: column;
+}
+
+.turma-header {
+  background-color: #5c8a9d;
+  color: white;
+  padding: 10px 15px;
+  position: relative;
+  height: 70px;
+}
+
+.turma-title {
+  font-size: 14px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.turma-professor {
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.professor-avatar {
+  position: absolute;
+  right: 10px;
+  bottom: -20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 2px solid white;
+  background-color: white;
+}
+
+.professor-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.turma-content {
+  flex: 1;
+  padding: 15px;
+}
+
+.add-turma-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 200px;
+}
+
+.add-turma-button {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background-color: #226680;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  margin-bottom: 10px;
+}
+
+.add-turma-text {
+  color: #226680;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+/* Responsive adjustments for Turmas */
+@media (max-width: 1024px) {
+  .turmas-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .turmas-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .turmas-grid {
+    grid-template-columns: 1fr;
   }
 }
