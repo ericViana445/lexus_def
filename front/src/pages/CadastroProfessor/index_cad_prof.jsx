@@ -6,6 +6,7 @@ import iconSenha from '../../assets/senha.png';
 import iconConfirmar from '../../assets/confirmar.png';
 import eyesComDesc from '../../assets/eyesComDesc.png';
 import iconeProfessor from '../../assets/iconeProfessor.png';
+import { Link } from 'react-router-dom';
 
 const CadastroProfessor = () => {
   const [formData, setFormData] = useState({
@@ -16,20 +17,20 @@ const CadastroProfessor = () => {
     cargo: 'professor'
   });
 
- const handleChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Validação: senha e confirmação devem ser iguais
     if (formData.senha !== formData.confirmar) {
       alert("As senhas não coincidem.");
       return;
     }
-  
+
     // Monta o payload sem o campo 'confirmar'
     const payload = {
       nome: formData.nome,
@@ -38,10 +39,10 @@ const CadastroProfessor = () => {
       cargo: formData.cargo,
       sala: formData.cargo === "aluno" ? formData.sala : undefined
     };
-  
+
     // Debug opcional
     console.log("Enviando payload:", payload);
-  
+
     try {
       const response = await fetch("http://127.0.0.1:8000/cadastrar", {
         method: "POST",
@@ -50,12 +51,12 @@ const CadastroProfessor = () => {
         },
         body: JSON.stringify(payload)
       });
-    
+
       if (!response.ok) {
         const error = await response.json();
         throw new Error(error.detail || "Erro no cadastro.");
       }
-    
+
       const data = await response.json();
       alert(`Sucesso: ${data.mensagem}\nCódigo da Sala: ${data.codigo_sala || "N/A"}`);
     } catch (err) {
@@ -128,7 +129,12 @@ const CadastroProfessor = () => {
             />
           </div>
 
-          <button type="submit" className="botao-final">Gerar Código</button>
+
+
+          <Link to="/chat" className="botao-final">
+            Gerar Código
+          </Link>
+
         </form>
       </div>
     </div>

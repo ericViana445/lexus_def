@@ -1,0 +1,252 @@
+/* Reset básico */
+
+body,
+html {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #ffffff;
+}
+
+
+/* Header */
+
+.header {
+    background-color: #226680;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 2rem;
+    border-bottom-left-radius: 40px;
+}
+
+.logo {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.logo span {
+    color: white;
+    font-family: cursive;
+    font-size: 2rem;
+}
+
+
+/* Nav */
+
+nav {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+nav a,
+.produzir-toggle {
+    color: white;
+    text-decoration: none;
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    font-weight: 500;
+    background-color: transparent;
+}
+
+nav a.active {
+    background-color: #184a5a;
+}
+
+nav a:hover,
+.produzir-toggle:hover {
+    background-color: #25687f;
+}
+
+
+/* Dropdown */
+
+.produzir-container {
+    position: relative;
+}
+
+.produzir-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: #700470;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    min-width: 150px;
+}
+
+.produzir-menu a {
+    display: block;
+    padding: 0.6rem 1rem;
+    color: white;
+    text-decoration: none;
+}
+
+.produzir-menu a:hover {
+    background-color: #1c4d5d;
+}
+
+.produzir-container:hover .produzir-menu {
+    display: block;
+}
+
+
+/* Chat Layout */
+
+.chat-container {
+    display: flex;
+    height: calc(100vh - 80px);
+    background-color: #c4d6dc;
+    padding: 1.5rem;
+    gap: 1.5rem;
+    box-sizing: border-box;
+}
+
+
+/* Contacts */
+
+.contacts {
+    width: 250px;
+    background-color: #b0c3cc;
+    padding: 1rem;
+    border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.contact {
+    background-color: white;
+    padding: 0.8rem 1.2rem;
+    border-radius: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.contact .badge {
+    background-color: #226680;
+    color: white;
+    border-radius: 50%;
+    padding: 0.3rem 0.7rem;
+    font-size: 0.9rem;
+}
+
+
+/* Chat box */
+
+.chat-box {
+    flex: 1;
+    background-color: #b6ccd4;
+    border-radius: 20px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+
+/* Mensagens */
+
+.messages {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    overflow-y: auto;
+    padding-right: 1rem;
+}
+
+.message {
+    max-width: 60%;
+    padding: 1rem 1.4rem;
+    border-radius: 30px;
+    font-size: 1rem;
+    color: white;
+}
+
+.message.left {
+    background-color: #6f9dab;
+    align-self: flex-start;
+}
+
+.message.right {
+    background-color: #226680;
+    align-self: flex-end;
+    border-bottom-right-radius: 0;
+}
+
+
+/* Caixa de entrada */
+
+.input-box {
+    display: flex;
+    align-items: center;
+    margin-top: 1rem;
+}
+
+.input-box input {
+    flex: 1;
+    padding: 1rem 1.2rem;
+    border-radius: 50px;
+    border: none;
+    font-size: 1rem;
+    outline: none;
+    background-color: white;
+    box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
+}
+
+.send-button {
+    background-color: #226680;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    margin-left: 0.7rem;
+    padding: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.2s;
+}
+
+.send-button:hover {
+    background-color: #154c5c;
+}
+
+
+/* Responsivo */
+
+@media (max-width: 768px) {
+    .chat-container {
+        flex-direction: column;
+    }
+    .contacts {
+        width: 100%;
+        flex-direction: row;
+        overflow-x: scroll;
+        border-radius: 0;
+    }
+    .contact {
+        min-width: 140px;
+        justify-content: center;
+    }
+    .chat-box {
+        border-radius: 0;
+        padding: 1rem;
+    }
+    .produzir-menu {
+        right: 0;
+        left: auto;
+    }
+}
