@@ -2,30 +2,59 @@ from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel, EmailStr, field_validator
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Literal
-import json
-import os
+import sqlite3
+import random
+import string
 
 app = FastAPI()
 
-DB_FILE = "database.json"
+DB_FILE = "usuarios.db"
 
 # Middleware CORS
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://127.0.0.1:5500"],  # Substitua pelo domínio do seu front
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
+# Inicialização do banco
+def inicializar_banco():
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
 
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS salas (
+                codigo TEXT PRIMARY KEY,
+                email_professor TEXT UNIQUE,
+                FOREIGN KEY (email_professor) REFERENCES usuarios(email)
+            )
+        """)
 
-# Modelo de dados
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS usuarios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                senha TEXT NOT NULL,
+                cargo TEXT CHECK(cargo IN ('professor', 'aluno')) NOT NULL,
+                sala TEXT,
+                FOREIGN KEY (sala) REFERENCES salas(codigo)
+            )
+        """)
+        conn.commit()
+
+inicializar_banco()
+
+# Modelo de dados do usuário
 class Usuario(BaseModel):
     nome: str
     email: EmailStr
     senha: str
     cargo: Literal['professor', 'aluno']
+    sala: str | None = None  # Aluno precisa informar a sala
+
 
     @field_validator("senha")
     def senha_minima(cls, v):
@@ -33,39 +62,67 @@ class Usuario(BaseModel):
             raise ValueError("A senha deve ter pelo menos 6 caracteres.")
         return v
 
-# Função para carregar o banco de dados
-def carregar_dados():
-    if not os.path.exists(DB_FILE):
-        with open(DB_FILE, "w") as f:
-            json.dump([], f)
-    with open(DB_FILE, "r") as f:
-        return json.load(f)
+# Função para gerar código de sala
+def gerar_codigo_sala():
+    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=6))
 
-# Função para salvar no banco de dados
-def salvar_dados(dados):
-    with open(DB_FILE, "w") as f:
-        json.dump(dados, f, indent=4)
-
-# Rota para cadastrar um usuário
+# Cadastro de usuário
 @app.post("/cadastrar")
 def cadastrar_usuario(usuario: Usuario):
-    print(usuario)
+    try:
+        with sqlite3.connect(DB_FILE) as conn:
+            cursor = conn.cursor()
 
-    dados = carregar_dados()
+            codigo_sala = None
 
-    # Verificar se e-mail já está cadastrado
-    if any(u['email'] == usuario.email for u in dados):
-        raise HTTPException(status_code=400, detail="Email já cadastrado.")
+            # Se for professor, criar uma sala e atribuir
+            if usuario.cargo == "professor":
+                while True:
+                    codigo_sala = gerar_codigo_sala()
+                    cursor.execute("SELECT 1 FROM salas WHERE codigo = ?", (codigo_sala,))
+                    if not cursor.fetchone():
+                        break
 
-    # Adicionar novo usuário
-    dados.append(usuario.dict())
-    salvar_dados(dados)
-    return {"mensagem": "Usuário cadastrado com sucesso!"}
+                cursor.execute(
+                    "INSERT INTO salas (codigo, email_professor) VALUES (?, ?)",
+                    (codigo_sala, usuario.email)
+                )
 
-# Rota para listar todos os usuários
+            cursor.execute(
+                "INSERT INTO usuarios (nome, email, senha, cargo, sala) VALUES (?, ?, ?, ?, ?)",
+                (usuario.nome, usuario.email, usuario.senha, usuario.cargo, codigo_sala)
+            )
+
+            conn.commit()
+            print(f"cadastrado com sucesso{Usuario}")
+
+        return {
+            "mensagem": "Usuário cadastrado com sucesso!",
+            "codigo_sala": codigo_sala if usuario.cargo == "professor" else None
+        }
+
+    except sqlite3.IntegrityError as e:
+        if "usuarios.email" in str(e):
+            raise HTTPException(status_code=400, detail="Email já cadastrado.")
+            print("erro no cadastro")
+
+        elif "salas.email_professor" in str(e):
+            raise HTTPException(status_code=400, detail="Este professor já criou uma sala.")
+            print("erro no cadastro")
+        else:
+            raise HTTPException(status_code=500, detail="Erro ao cadastrar.")
+            print("erro no cadastro")
+
+
+# Listar usuários
 @app.get("/usuarios")
 def listar_usuarios():
-    return carregar_dados()
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT nome, email, cargo, sala FROM usuarios")
+        usuarios = cursor.fetchall()
+
+    return [{"nome": u[0], "email": u[1], "cargo": u[2], "sala": u[3]} for u in usuarios]
 
 # Modelo para login
 class LoginRequest(BaseModel):
@@ -76,12 +133,19 @@ class LoginRequest(BaseModel):
 # Rota de login
 @app.post("/login")
 def login(usuario: LoginRequest):
-    dados = carregar_dados()
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT nome, senha, cargo, sala FROM usuarios WHERE email = ?",
+            (usuario.email,)
+        )
+        resultado = cursor.fetchone()
 
-    # Buscar usuário por email
-    for u in dados:
-        if u['email'] == usuario.email and u['senha'] == usuario.senha and u['nome'] == usuario.nome:
-            return {"mensagem": f"Login bem-sucedido. Bem-vindo, {u['nome']}!", "cargo": u['cargo']}
+    if resultado and resultado[0] == usuario.nome and resultado[1] == usuario.senha:
+        return {
+            "mensagem": f"Login bem-sucedido. Bem-vindo, {usuario.nome}!",
+            "cargo": resultado[2],
+            "sala": resultado[3]
+        }
 
-    # Se não encontrar correspondência
     raise HTTPException(status_code=401, detail="Email ou senha inválidos.")

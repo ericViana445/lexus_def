@@ -12,20 +12,59 @@ const CadastroProfessor = () => {
     nome: '',
     email: '',
     senha: '',
-    confirmar: ''
+    confirmar: '',
+    cargo: 'professor'
   });
 
-  const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+ const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert("Cadastro enviado!");
+  
+    // Validação: senha e confirmação devem ser iguais
+    if (formData.senha !== formData.confirmar) {
+      alert("As senhas não coincidem.");
+      return;
+    }
+  
+    // Monta o payload sem o campo 'confirmar'
+    const payload = {
+      nome: formData.nome,
+      email: formData.email,
+      senha: formData.senha,
+      cargo: formData.cargo,
+      sala: formData.cargo === "aluno" ? formData.sala : undefined
+    };
+  
+    // Debug opcional
+    console.log("Enviando payload:", payload);
+  
+    try {
+      const response = await fetch("http://127.0.0.1:8000/cadastrar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+    
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || "Erro no cadastro.");
+      }
+    
+      const data = await response.json();
+      alert(`Sucesso: ${data.mensagem}\nCódigo da Sala: ${data.codigo_sala || "N/A"}`);
+    } catch (err) {
+      alert(`Erro: ${err.message}`);
+    }
   };
+
+
+
 
   return (
     <div className="contener2">
