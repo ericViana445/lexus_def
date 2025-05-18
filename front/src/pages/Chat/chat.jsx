@@ -37,7 +37,7 @@ function Chat() {
   }, [conversations, currentContact]);
 
   return (
-    <div className="chat-wrapper">
+    <div className="chat-page">
       <header className="header">
         <div className="logo">
           <img src={logoBarra} alt="Logo Lexus" />
