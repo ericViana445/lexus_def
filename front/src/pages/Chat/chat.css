@@ -1,4 +1,4 @@
-/* Reset básico */
+/* Reset */
 
 body,
 html {
@@ -6,6 +6,15 @@ html {
     padding: 0;
     font-family: 'Poppins', sans-serif;
     background-color: #ffffff;
+}
+
+
+/* Envoltório geral */
+
+.chat-wrapper {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0;
 }
 
 
@@ -18,18 +27,25 @@ html {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 2rem;
-    border-bottom-left-radius: 40px;
+    border-bottom-left-radius: 0;
 }
 
 .logo {
-    font-size: 1.8rem;
-    font-weight: bold;
+    display: flex;
+    align-items: center;
 }
 
-.logo span {
-    color: white;
+.logo span:first-child {
     font-family: cursive;
     font-size: 2rem;
+    color: black;
+    margin-right: 0.2rem;
+}
+
+.logo span:last-child {
+    font-weight: 700;
+    font-size: 1.8rem;
+    color: white;
 }
 
 
@@ -37,7 +53,7 @@ html {
 
 nav {
     display: flex;
-    gap: 1rem;
+    gap: 1.2rem;
     align-items: center;
 }
 
@@ -45,10 +61,11 @@ nav a,
 .produzir-toggle {
     color: white;
     text-decoration: none;
-    padding: 0.3rem 1rem;
+    padding: 0.4rem 1rem;
     border-radius: 20px;
     font-weight: 500;
     background-color: transparent;
+    transition: 0.3s;
 }
 
 nav a.active {
@@ -58,6 +75,11 @@ nav a.active {
 nav a:hover,
 .produzir-toggle:hover {
     background-color: #25687f;
+}
+
+nav a:last-child {
+    border: 2px solid white;
+    padding: 0.4rem 1rem;
 }
 
 
@@ -96,19 +118,19 @@ nav a:hover,
 }
 
 
-/* Chat Layout */
+/* Layout do chat */
 
 .chat-container {
     display: flex;
-    height: calc(100vh - 80px);
+    padding: 2rem;
+    gap: 2rem;
     background-color: #c4d6dc;
-    padding: 1.5rem;
-    gap: 1.5rem;
+    flex-wrap: wrap;
     box-sizing: border-box;
 }
 
 
-/* Contacts */
+/* Contatos */
 
 .contacts {
     width: 250px;
@@ -118,6 +140,7 @@ nav a:hover,
     display: flex;
     flex-direction: column;
     gap: 1rem;
+    flex-shrink: 0;
 }
 
 .contact {
@@ -128,8 +151,8 @@ nav a:hover,
     justify-content: space-between;
     align-items: center;
     font-weight: 600;
-    cursor: pointer;
     font-size: 1rem;
+    cursor: pointer;
 }
 
 .contact .badge {
@@ -141,7 +164,7 @@ nav a:hover,
 }
 
 
-/* Chat box */
+/* Caixa de conversa */
 
 .chat-box {
     flex: 1;
@@ -151,6 +174,7 @@ nav a:hover,
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    min-width: 0;
 }
 
 
@@ -185,7 +209,7 @@ nav a:hover,
 }
 
 
-/* Caixa de entrada */
+/* Input */
 
 .input-box {
     display: flex;
@@ -227,14 +251,15 @@ nav a:hover,
 
 /* Responsivo */
 
-@media (max-width: 768px) {
+@media (max-width: 1024px) {
     .chat-container {
         flex-direction: column;
+        padding: 1rem;
     }
     .contacts {
         width: 100%;
         flex-direction: row;
-        overflow-x: scroll;
+        overflow-x: auto;
         border-radius: 0;
     }
     .contact {

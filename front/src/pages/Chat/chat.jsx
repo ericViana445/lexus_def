@@ -1,5 +1,6 @@
 import './chat.css';
 import { useEffect, useRef, useState } from 'react';
+import logoBarra from '../../assets/lexus_logo_barra.png';
 
 const initialConversations = {
   George: [
@@ -36,21 +37,23 @@ function Chat() {
   }, [conversations, currentContact]);
 
   return (
-    <div>
+    <div className="chat-wrapper">
       <header className="header">
-        <div className="logo"><span>L</span>exus</div>
+        <div className="logo">
+          <img src={logoBarra} alt="Logo Lexus" />
+        </div>
         <nav>
-          <a href="home.html">Home</a>
+          <a href="#">Home</a>
           <div className="produzir-container">
             <span className="produzir-toggle">Produzir ▼</span>
             <div className="produzir-menu">
-              <a href="fotografia.html">Fotografia</a>
+              <a href="#">Fotografia</a>
               <a href="#">Podcast</a>
               <a href="#">Tema Proposto</a>
             </div>
           </div>
-          <a href="chat.html" className="active">Chat</a>
-          <a href="perfil.html">Perfil</a>
+          <a href="#" className="active">Chat</a>
+          <a href="#">Perfil</a>
         </nav>
       </header>
 

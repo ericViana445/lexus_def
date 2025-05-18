@@ -131,9 +131,9 @@ const CadastroProfessor = () => {
 
 
 
-          <Link to="/chat" className="botao-final">
+          <button className="botao-final" onClick={() => navigate('/chat')}>
             Gerar Código
-          </Link>
+          </button>
 
         </form>
       </div>
