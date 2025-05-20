@@ -1,9 +1,8 @@
 import React, { useState } from 'react';
 import './styles_login.css';
-import eyesComDesc from '../../assets/eyes.png';
+import eyesComDesc from '../../assets/eyes1.png';
 import iconEmail from '../../assets/email.png';
 import iconSenha from '../../assets/senha.png';
-import iconeLogin from '../../assets/iconeAluno.png';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -44,7 +43,7 @@ export default function Login() {
             Bem-Vindo!<br />
             <span className="destaque">Login</span>
           </h2>
-          <img src={iconeLogin} alt="Ícone Login" className="iconeLogin" />
+          
         </div>
 
         <form onSubmit={handleSubmit} className="formulario-login">

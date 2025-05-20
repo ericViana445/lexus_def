@@ -1,84 +1,150 @@
-import React, { useState } from 'react';
+ import React, { useState } from 'react';
 import './styles_cad_aluno.css';
-import cadastroImage from '../../assets/eyes.png'; // Ajuste o caminho conforme a sua estrutura de pastas
+import iconUser from '../../assets/user.png';
+import iconEmail from '../../assets/email.png';
+import iconSenha from '../../assets/senha.png';
+import iconConfirmar from '../../assets/confirmar.png';
+import eyesComDesc from '../../assets/eyes1.png';
+import iconeAluno from '../../assets/iconeAluno1.png';
+import { useNavigate } from 'react-router-dom';
 
-const CadastroAluno = () => {
+const IndexCadAluno = () => {
+  const navigate = useNavigate();
+
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
     senha: '',
     confirmar: '',
-    codigo_turma: ''
+    sala: '',
+    cargo: 'aluno'
   });
 
   const handleChange = (e) => {
-    setFormData(prev => ({
-      ...prev,
-      [e.target.name]: e.target.value
-    }));
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { nome, email, senha } = formData;
+    if (formData.senha !== formData.confirmar) {
+      alert("As senhas não coincidem.");
+      return;
+    }
+
+    const payload = {
+      nome: formData.nome,
+      email: formData.email,
+      senha: formData.senha,
+      sala: formData.sala,
+      cargo: formData.cargo
+    };
+
+    console.log("Enviando payload:", payload);
 
     try {
       const response = await fetch("http://127.0.0.1:8000/cadastrar", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nome, email, senha, cargo: "aluno" })
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
       });
 
-      const data = await response.json();
-
-      if (response.ok) {
-        alert(data.mensagem);
-      } else {
-        alert(data.detail);
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || "Erro no cadastro.");
       }
-    } catch (error) {
-      console.error("Erro:", error);
-      alert("Erro ao cadastrar.");
-    }
 
-    window.location.href = '/';
+      const data = await response.json();
+      alert(`Sucesso: ${data.mensagem}`);
+      navigate('/chat'); // redireciona após o cadastro
+    } catch (err) {
+      alert(`Erro: ${err.message}`);
+    }
   };
 
   return (
-    <div className="container">
-      <div className="left">
-        <h2>Aluno</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="nome">Nome</label>
-            <input type="text" id="nome" name="nome" value={formData.nome} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="email">Email</label>
-            <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="senha">Senha</label>
-            <input type="password" id="senha" name="senha" value={formData.senha} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="confirmar">Confirmar Senha</label>
-            <input type="password" id="confirmar" name="confirmar" value={formData.confirmar} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="codigo_turma">Código da Turma</label>
-            <input type="text" id="codigo_turma" name="codigo_turma" value={formData.codigo_turma} onChange={handleChange} />
-          </div>
-          <button type="submit" className="submit-btn">Cadastrar</button>
-        </form>
+    <div className="contener2">
+      {/* Imagem à esquerda */}
+      <div className="imagem-lateral">
+        <img src={eyesComDesc} alt="Imagem lateral" className="foto-lateral" />
       </div>
-      <div className="right">
-        <img src={cadastroImage} alt="Cadastro Aluno" />
-        <div className="caption">JR, Williamsburg<br /><small>JR 2012</small></div>
+
+      {/* Formulário à direita */}
+      <div className="conteudo-direito">
+        <div className="cabecalho-professor">
+          <h2 className="titulo">
+            Bem-Vindo!<br />
+            <span className="destaque">Aluno</span>
+          </h2>
+          <img src={iconeAluno} alt="Ícone Aluno" className="iconeProfessor" />
+        </div>
+
+        <form onSubmit={handleSubmit} className="formulario-professor">
+          <div className="input-grupo">
+            <img src={iconUser} alt="Ícone usuário" />
+            <input
+              type="text"
+              name="nome"
+              placeholder="Nome"
+              value={formData.nome}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="input-grupo">
+            <img src={iconEmail} alt="Ícone email" />
+            <input
+              type="email"
+              name="email"
+              placeholder="Email"
+              value={formData.email}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="input-grupo">
+            <img src={iconSenha} alt="Ícone senha" />
+            <input
+              type="password"
+              name="senha"
+              placeholder="Senha"
+              value={formData.senha}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="input-grupo">
+            <img src={iconConfirmar} alt="Ícone confirmar senha" />
+            <input
+              type="password"
+              name="confirmar"
+              placeholder="Confirmar Senha"
+              value={formData.confirmar}
+              onChange={handleChange}
+            />
+          </div>
+
+          <div className="input-grupo">
+            <img src={iconUser} alt="Ícone sala" />
+            <input
+              type="text"
+              name="sala"
+              placeholder="Código da Sala"
+              value={formData.sala}
+              onChange={handleChange}
+            />
+          </div>
+
+          <button className="botao-final" type="submit">
+            Entrar na Sala
+          </button>
+        </form>
       </div>
     </div>
   );
 };
 
-export default CadastroAluno;
+export default IndexCadAluno;

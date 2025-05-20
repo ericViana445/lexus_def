@@ -4,7 +4,7 @@ import iconUser from '../../assets/user.png';
 import iconEmail from '../../assets/email.png';
 import iconSenha from '../../assets/senha.png';
 import iconConfirmar from '../../assets/confirmar.png';
-import eyesComDesc from '../../assets/eyesComDesc.png';
+import eyesComDesc from '../../assets/eyes1.png';
 import iconeProfessor from '../../assets/iconeProfessor.png';
 import { Link } from 'react-router-dom';
 

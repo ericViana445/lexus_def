@@ -2,9 +2,9 @@ import './styles_cad.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import logo_lexus from '../../assets/logo_lexus.png';
-import iconeAluno from '../../assets/iconeAluno.png';
+import iconeAluno from '../../assets/iconeAluno1.png';
 import iconeProfessor from '../../assets/iconeProfessor.png';
-import eyesComDesc from '../../assets/eyesComDesc.png';
+import eyesComDesc from '../../assets/eyes1.png';
 
 function OpcaoCadastro() {
   const navigate = useNavigate();
