@@ -4,7 +4,7 @@ import iconUser from '../../assets/user.png';
 import iconEmail from '../../assets/email.png';
 import iconSenha from '../../assets/senha.png';
 import iconConfirmar from '../../assets/confirmar.png';
-import eyesComDesc from '../../assets/eyes1.png';
+import eyesComDesc from '../../assets/eyesComDesc.png';
 import iconeProfessor from '../../assets/iconeProfessor.png';
 import { Link } from 'react-router-dom';
 
@@ -12,7 +12,7 @@ const CadastroProfessor = () => {
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
-    senha: '',
+    senha: '',  
     confirmar: '',
     cargo: 'professor'
   });
@@ -131,9 +131,9 @@ const CadastroProfessor = () => {
 
 
 
-          <button className="botao-final" onClick={() => navigate('/chat')}>
+          <Link to="/chat" className="botao-final">
             Gerar Código
-          </button>
+          </Link>
 
         </form>
       </div>
