@@ -43,8 +43,9 @@ body {
 }
 
 .logo img {
-    height: 36px;
+    height: 90px;
     width: auto;
+    margin-left: 10%;
     object-fit: contain;
 }
 
@@ -55,6 +56,7 @@ nav {
     display: flex;
     gap: 1.2rem;
     align-items: center;
+    height: 90px;
 }
 
 nav a,
