@@ -26,7 +26,7 @@ function Home() {
             <div className="botao cadastrar" onClick={() => navigate('/cadastro')}>
               Cadastrar-se
             </div>
-            <div className="botao logar" onClick={() => navigate('/home')}>
+            <div className="botao logar" onClick={() => navigate('/Login')}>
               Logar
             </div>
           </div>

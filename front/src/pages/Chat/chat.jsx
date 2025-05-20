@@ -1,6 +1,8 @@
 import './chat.css';
 import { useEffect, useRef, useState } from 'react';
 import logoBarra from '../../assets/lexus_logo_barra.png';
+import iconeEnviar from '../../assets/send.png';
+import avatar from '../../assets/perfil.png'; // ✅ imagem do perfil
 
 const initialConversations = {
   George: [
@@ -19,6 +21,7 @@ function Chat() {
   const [currentContact, setCurrentContact] = useState("George");
   const [conversations, setConversations] = useState(initialConversations);
   const [inputText, setInputText] = useState("");
+  const [perfilAberto, setPerfilAberto] = useState(false);
   const messagesRef = useRef(null);
 
   const sendMessage = () => {
@@ -44,6 +47,7 @@ function Chat() {
         </div>
         <nav>
           <a href="#">Home</a>
+
           <div className="produzir-container">
             <span className="produzir-toggle">Produzir ▼</span>
             <div className="produzir-menu">
@@ -52,8 +56,26 @@ function Chat() {
               <a href="#">Tema Proposto</a>
             </div>
           </div>
+
           <a href="#" className="active">Chat</a>
-          <a href="#">Perfil</a>
+
+          {/* ✅ Dropdown ativado por "Perfil" */}
+          <div className="perfil-container" onClick={() => setPerfilAberto(!perfilAberto)}>
+            <span className="perfil-toggle">Perfil</span>
+            {perfilAberto && (
+              <div className="perfil-dropdown">
+                <div className="perfil-info">
+                  <img src={avatar} alt="Avatar" className="perfil-avatar" />
+                  <div>
+                    <strong>Seu Nome</strong>
+                    <p>seu@email.com</p>
+                  </div>
+                </div>
+                <hr />
+                <button className="sair-botao">Sair</button>
+              </div>
+            )}
+          </div>
         </nav>
       </header>
 
@@ -91,7 +113,9 @@ function Chat() {
               onChange={(e) => setInputText(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && sendMessage()}
             />
-            <button className="send-button" onClick={sendMessage}>→</button>
+            <button className="send-button" onClick={sendMessage}>
+              <img src={iconeEnviar} alt="Enviar" className="icone-enviar" />
+            </button>
           </div>
         </div>
       </div>
