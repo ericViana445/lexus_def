@@ -2,10 +2,11 @@
 
 import { useState } from "react"
 import "./Home.css"
-import Header from '../../components/header'; // importe o novo Header
-import avatar from '../../assets/perfil.png'; // imagem do perfil
+import Header from '../../components/header'
+import avatar from '../../assets/avatar.png'
+import bannerMural from '../../assets/banner_mural.png';
 
-const placeholderAvatar = avatar;
+const placeholderAvatar = avatar
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState("Turmas")
@@ -52,13 +53,6 @@ const Home = () => {
             <button className={activeTab === "Mural" ? "tab active" : "tab"} onClick={() => setActiveTab("Mural")}>Mural</button>
             <button className={activeTab === "Produções" ? "tab active" : "tab"} onClick={() => setActiveTab("Produções")}>Produções</button>
           </div>
-          <div className="user-profile">
-            <div className="user-email">gabriel@email.br</div>
-            <div className="user-info">
-              <img src={placeholderAvatar} alt="Perfil do usuário" className="user-avatar" />
-              <div className="user-greeting">Olá, Gabriel!</div>
-            </div>
-          </div>
         </div>
 
         <div className="content-section">
@@ -77,9 +71,10 @@ const Home = () => {
                     <div className="turma-content"></div>
                   </div>
                 ))}
+
                 <div className="add-turma-container">
                   <button className="add-turma-button">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="65" height="65" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="12" y1="5" x2="12" y2="19"></line>
                       <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
@@ -92,8 +87,15 @@ const Home = () => {
 
           {activeTab === "Mural" && (
             <div className="mural-container">
+              {/* Header do Mural estilizado e ampliado */}
               <div className="mural-header">
-                <h2>Port. Instrumental - LICOMP 25</h2>
+                <span>Port. Instrumental - LICOMP 25</span>
+                <img 
+  src={bannerMural} 
+  alt="Ilustração do mural" 
+  className="mural-illustration" 
+/>
+
               </div>
               <div className="mural-content">
                 <div className="post-input">
@@ -128,7 +130,7 @@ const Home = () => {
                   <div className="comment-input-container">
                     <input type="text" placeholder="Adicionar comentário para a turma..." className="comment-text-input" />
                     <button className="send-button">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7e3ff2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="22" y1="2" x2="11" y2="13"></line>
                         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                       </svg>
