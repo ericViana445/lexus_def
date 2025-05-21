@@ -2,10 +2,10 @@
 
 import { useState } from "react"
 import "./Home.css"
+import Header from '../../components/header'; // importe o novo Header
+import avatar from '../../assets/perfil.png'; // imagem do perfil
 
-// Use placeholder images instead of trying to import the actual images
-const placeholderAvatar = "https://via.placeholder.com/40"
-const placeholderLogo = "https://via.placeholder.com/150x50"
+const placeholderAvatar = avatar;
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState("Turmas")
@@ -39,52 +39,28 @@ const Home = () => {
 
   return (
     <div className="app-container">
-      {/* Full-width Header */}
-      <header className="header-wrapper">
-        <div className="header-content">
-          <div className="logo">
-            <img src={placeholderLogo || "/placeholder.svg"} alt="Lexus Logo" className="foto-lateral" />
-          </div>
-          <nav className="main-nav">
-            <ul>
-              <li className="active">Home</li>
-              <li className="dropdown">
-                Produzir <span className="dropdown-arrow">▼</span>
-              </li>
-              <li>Chat</li>
-              <li className="profile-button">Perfil</li>
-            </ul>
-          </nav>
-        </div>
-      </header>
+      <Header 
+        nome="Gabriel" 
+        email="gabriel@email.br" 
+        avatarImg={avatar} 
+      />
 
       <div className="lexus-container">
-        {/* Secondary Navigation */}
         <div className="secondary-nav">
           <div className="tabs">
-            <button className={activeTab === "Turmas" ? "tab active" : "tab"} onClick={() => setActiveTab("Turmas")}>
-              Turmas
-            </button>
-            <button className={activeTab === "Mural" ? "tab active" : "tab"} onClick={() => setActiveTab("Mural")}>
-              Mural
-            </button>
-            <button
-              className={activeTab === "Produções" ? "tab active" : "tab"}
-              onClick={() => setActiveTab("Produções")}
-            >
-              Produções
-            </button>
+            <button className={activeTab === "Turmas" ? "tab active" : "tab"} onClick={() => setActiveTab("Turmas")}>Turmas</button>
+            <button className={activeTab === "Mural" ? "tab active" : "tab"} onClick={() => setActiveTab("Mural")}>Mural</button>
+            <button className={activeTab === "Produções" ? "tab active" : "tab"} onClick={() => setActiveTab("Produções")}>Produções</button>
           </div>
           <div className="user-profile">
             <div className="user-email">gabriel@email.br</div>
             <div className="user-info">
-              <img src={placeholderAvatar || "/placeholder.svg"} alt="Perfil do usuário" className="user-avatar" />
+              <img src={placeholderAvatar} alt="Perfil do usuário" className="user-avatar" />
               <div className="user-greeting">Olá, Gabriel!</div>
             </div>
           </div>
         </div>
 
-        {/* Content Section */}
         <div className="content-section">
           {activeTab === "Turmas" && (
             <div className="turmas-container">
@@ -95,25 +71,15 @@ const Home = () => {
                       <div className="turma-title">Port. Instrumental - LICOMP...</div>
                       <div className="turma-professor">Prof. Luis Barone</div>
                       <div className="professor-avatar">
-                        <img src={placeholderAvatar || "/placeholder.svg"} alt="Professor" />
+                        <img src={placeholderAvatar} alt="Professor" />
                       </div>
                     </div>
-                    <div className="turma-content">{/* Empty content area as shown in the screenshot */}</div>
+                    <div className="turma-content"></div>
                   </div>
                 ))}
                 <div className="add-turma-container">
                   <button className="add-turma-button">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <line x1="12" y1="5" x2="12" y2="19"></line>
                       <line x1="5" y1="12" x2="19" y2="12"></line>
                     </svg>
@@ -129,11 +95,10 @@ const Home = () => {
               <div className="mural-header">
                 <h2>Port. Instrumental - LICOMP 25</h2>
               </div>
-
               <div className="mural-content">
                 <div className="post-input">
                   <div className="user-avatar-small">
-                    <img src={placeholderAvatar || "/placeholder.svg"} alt="Avatar" />
+                    <img src={placeholderAvatar} alt="Avatar" />
                   </div>
                   <input type="text" placeholder="Escreva um aviso para sua turma" className="post-text-input" />
                 </div>
@@ -141,7 +106,7 @@ const Home = () => {
                 <div className="post-item">
                   <div className="post-header">
                     <div className="user-avatar-small">
-                      <img src={placeholderAvatar || "/placeholder.svg"} alt="Avatar" />
+                      <img src={placeholderAvatar} alt="Avatar" />
                     </div>
                     <div className="post-info">
                       <div className="post-author">Luis Barone</div>
@@ -158,26 +123,12 @@ const Home = () => {
 
                 <div className="comment-input">
                   <div className="user-avatar-small">
-                    <img src={placeholderAvatar || "/placeholder.svg"} alt="Avatar" />
+                    <img src={placeholderAvatar} alt="Avatar" />
                   </div>
                   <div className="comment-input-container">
-                    <input
-                      type="text"
-                      placeholder="Adicionar comentário para a turma..."
-                      className="comment-text-input"
-                    />
+                    <input type="text" placeholder="Adicionar comentário para a turma..." className="comment-text-input" />
                     <button className="send-button">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="24"
-                        height="24"
-                        viewBox="0 0 24 24"
-                        fill="none"
-                        stroke="currentColor"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                         <line x1="22" y1="2" x2="11" y2="13"></line>
                         <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
                       </svg>
@@ -193,7 +144,7 @@ const Home = () => {
               {newsItems.map((item) => (
                 <div className="news-card" key={item.id}>
                   <div className="news-image">
-                    <img src={item.image || "/placeholder.svg"} alt="Notícia" />
+                    <img src={item.image} alt="Notícia" />
                   </div>
                   <div className="news-content">
                     <p>{item.title}</p>

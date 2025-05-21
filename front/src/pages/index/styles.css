@@ -161,6 +161,13 @@ div.botao {
     max-width: clamp(120px, 15vw, 240px);
 }
 
+.descricao-imagem {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+}
+
 
 /* Responsividade para tablets e celulares */
 

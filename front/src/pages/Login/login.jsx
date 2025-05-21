@@ -3,6 +3,7 @@ import './styles_login.css';
 import eyesComDesc from '../../assets/eyes1.png';
 import iconEmail from '../../assets/email.png';
 import iconSenha from '../../assets/senha.png';
+import descricao_imagem from '../../assets/descricao_imagem.png';
 
 export default function Login() {
   const [formData, setFormData] = useState({
@@ -32,9 +33,15 @@ export default function Login() {
   return (
     <div className="contener2">
       {/* Imagem lateral à esquerda */}
-      <div className="imagem-lateral">
-        <img src={eyesComDesc} alt="Imagem lateral" className="foto-lateral" />
-      </div>
+        <div className="imagem-bloco">
+          <div className="imagem">
+            <img src={eyesComDesc} alt="ilustração" className="foto" />
+          </div>
+
+          <div className="descricao-imagem">
+            <img src={descricao_imagem} alt="descrição" className="foto-descricao" />
+          </div>
+        </div>
 
       {/* Conteúdo à direita: formulário */}
       <div className="conteudo-direito">
