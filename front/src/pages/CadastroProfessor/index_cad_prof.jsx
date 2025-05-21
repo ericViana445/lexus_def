@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './styles_cad_prof.css';
 import iconUser from '../../assets/user.png';
 import iconEmail from '../../assets/email.png';
 import iconSenha from '../../assets/senha.png';
 import iconConfirmar from '../../assets/confirmar.png';
-import eyesComDesc from '../../assets/eyesComDesc.png';
+import eyesComDesc from '../../assets/eyes1.png';
 import iconeProfessor from '../../assets/iconeProfessor.png';
 import { Link } from 'react-router-dom';
 
@@ -22,6 +23,7 @@ const CadastroProfessor = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -63,8 +65,6 @@ const CadastroProfessor = () => {
       alert(`Erro: ${err.message}`);
     }
   };
-
-
 
 
   return (
@@ -131,9 +131,9 @@ const CadastroProfessor = () => {
 
 
 
-          <Link to="/chat" className="botao-final">
+          <button className="botao-final" onClick={() => navigate('/chat')}>
             Gerar Código
-          </Link>
+          </button>
 
         </form>
       </div>
