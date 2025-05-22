@@ -1,0 +1,102 @@
+.tema-container {
+  display: flex;
+  padding: 40px;
+  gap: 40px;
+  justify-content: space-between;
+  background-color: #fff;
+  font-family: 'Segoe UI', sans-serif;
+  min-height: 100vh; /* Adicionado para ocupar a altura total da tela */
+}
+
+.tema-left {
+  width: 20%;
+}
+
+.tema-title {
+  font-size: 40px;
+  color: #226680;
+  font-weight: 800;
+}
+
+.tema-subtitle {
+  font-size: 22px;
+  color: #226680;
+  margin-bottom: 20px;
+}
+
+.tema-mascote {
+    width: 400px;       /* aumentou o tamanho */
+  margin-top: 300px;   /* aumentou a distância do topo */
+}
+
+.tema-center {
+  width: 45%;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.tema-input {
+  padding: 19px;
+  font-size: 20px;
+  border-radius: 30px;
+  border: 5px solid  #226680;
+  outline: none;
+}
+
+.tema-textarea {
+  height: 800px;
+  padding: 15px;
+  font-size: 20px;
+  border-radius: 30px;
+  border: 5px solid #226680;
+  resize: none;
+  outline: none;
+}
+
+.tema-right {
+  width: 30%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 20px;
+}
+
+.tema-upload-box {
+  width: 100%;
+  height: 400px;
+  border: 5px solid #226680;
+  border-radius: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  font-size: 20px; /* aumenta o tamanho da fonte */
+  font-weight: 600; /* opcional, deixa mais forte */
+  color: #226680;
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.15);
+  padding: 20px;
+}
+
+.tema-upload-icon {
+  width: 200px;
+  margin-bottom: 10px;
+}
+
+.tema-enviar-btn {
+  background-color: white;
+  border: 4px solid #226680;
+  color: #226680;
+  border-radius: 30px;
+  padding: 10px 30px;
+  font-weight: bold;
+  font-size: 22px;
+  box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: 0.3s ease;
+}
+
+.tema-enviar-btn:hover {
+  background-color: #e0f7fa;
+}
