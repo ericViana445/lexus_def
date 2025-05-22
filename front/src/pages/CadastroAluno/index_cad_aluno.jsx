@@ -57,7 +57,7 @@ const IndexCadAluno = () => {
 
       const data = await response.json();
       alert(`Sucesso: ${data.mensagem}`);
-      navigate('/home'); // ✅ redireciona para o chat ao cadastrar
+      navigate('/homeAluno'); // ✅ redireciona para o chat ao cadastrar
     } catch (err) {
       alert(`Erro: ${err.message}`);
     }
