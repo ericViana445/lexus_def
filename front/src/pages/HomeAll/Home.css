@@ -8,7 +8,7 @@ body {
     padding: 0;
     font-family: 'Segoe UI', sans-serif;
     font-size: 0.85rem;
-    overflow-x: hidden;
+    overflow-x: auto;
     overflow-y: scroll;
 }
 
@@ -171,10 +171,9 @@ body {
 /* Mural */
 
 .mural-content {
-    background-color: #226680;
+    background-color: #ffffff;
     color: white;
     font-size: 2rem;
-    font-weight: bold;
     padding: 4rem 9rem;
     border-radius: 20px;
     margin-top: 2rem;
@@ -182,7 +181,7 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.0);
     /* NOVO: ocupa largura total além do container */
     width: calc(100% + 30vw);
     margin-left: -15vw;
@@ -190,7 +189,7 @@ body {
 }
 
 .mural-header {
-    background-color: #226680;
+    background: rgba(34, 102, 128, 0.72);
     color: white;
     font-size: 2rem;
     font-weight: bold;
@@ -217,76 +216,70 @@ body {
     height: 200px;
 }
 
+.post-input {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    width: calc(100% + 0.85rem);
+    /* 30vw - 17.1% ≈ 24.9vw */
+    padding: 1.78rem 1rem;
+}
 
-/* Comentários (post-input, post-item, comment-input) com largura igual ao header */
-
-.post-input,
 .post-item,
 .comment-input {
-    background-color: #226680;
-    color: white;
-    font-size: 2rem;
-    font-weight: bold;
-    padding: 4rem 9rem;
-    border-radius: 20px;
-    margin-top: 2rem;
-    margin-bottom: 2rem;
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: -1rem;
+    color: black;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
-    /* NOVO: ocupa largura total além do container */
-    width: calc(100% + 30vw);
-    margin-left: -15vw;
-    margin-right: -15vw;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.500);
+    width: calc(100% + 0.85rem);
+    /* 30vw - 17.1% ≈ 24.9vw */
+    padding: 1.78rem 1rem;
 }
 
-
-/* Avatar proporcional */
-
-.user-avatar-small img {
-    width: 72px;
-    height: 72px;
+.user-avatar-small img,
+.user-avatar-small {
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
 }
-
-
-/* Campos de texto maiores */
 
 .post-text-input,
 .comment-text-input {
     flex: 1;
-    padding: 1.5rem;
+    padding: 0rem 4rem;
     font-size: 1.5rem;
     border: none;
-    border-radius: 10px;
-    background-color: #f4f4f4;
+    border-radius: 50px;
+    background-color: #eeeeee;
+    color: #222;
 }
-
-
-/* Botão de envio maior e proporcional */
 
 .send-button {
     background-color: #e0d8f0;
     border: none;
     border-radius: 50%;
-    width: 64px;
-    height: 64px;
+    width: 48px;
+    height: 48px;
     display: flex;
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
 }
 
 .send-button svg {
     stroke: #7e3ff2;
-    width: 28px;
-    height: 28px;
 }
-
-
-/* Texto do autor e data maiores */
 
 .post-info {
     display: flex;
@@ -295,12 +288,18 @@ body {
 
 .post-author {
     font-weight: bold;
-    font-size: 1.5rem;
+    font-size: 2rem;
 }
 
 .post-date {
     font-size: 1.2rem;
     color: #666;
+}
+
+.post-body {
+    font-size: 2.3rem;
+    margin-top: 10px;
+    color: #525151;
 }
 
 .mural-content {

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Cadastro de Usuário e Lista de Salas</title>
+</head>
+<body>
+    <h1>Cadastro de Usuário</h1>
+    <form id="cadastroForm">
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="email">Email:</label><br>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <label for="senha">Senha:</label><br>
+        <input type="password" id="senha" name="senha" required><br><br>
+
+        <label for="cargo">Cargo:</label><br>
+        <select id="cargo" name="cargo" required>
+            <option value="aluno">Aluno</option>
+            <option value="professor">Professor</option>
+        </select><br><br>
+
+        <div id="salaDiv" style="display:none;">
+            <label for="sala">Código da Sala:</label><br>
+            <input type="text" id="sala" name="sala"><br><br>
+        </div>
+
+        <button type="submit">Cadastrar</button>
+    </form>
+
+    <p id="mensagem"></p>
+
+    <hr>
+    <h2>Salas Cadastradas</h2>
+    <ul id="listaSalas"></ul>
+
+    <script>
+        const form = document.getElementById("cadastroForm");
+        const cargoSelect = document.getElementById("cargo");
+        const salaDiv = document.getElementById("salaDiv");
+
+        // Mostra/esconde o campo de sala dependendo do cargo
+        cargoSelect.addEventListener("change", () => {
+            salaDiv.style.display = cargoSelect.value === "aluno" ? "block" : "none";
+        });
+
+        form.addEventListener("submit", async (e) => {
+            e.preventDefault();
+
+            const data = {
+                nome: form.nome.value,
+                email: form.email.value,
+                senha: form.senha.value,
+                cargo: form.cargo.value
+            };
+
+            if (data.cargo === "aluno") {
+                data.sala = form.sala.value;
+            }
+
+            const response = await fetch("http://localhost:8000/cadastrar", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(data)
+            });
+
+            const resultado = await response.json();
+            const mensagemEl = document.getElementById("mensagem");
+
+            if (response.ok) {
+                mensagemEl.innerText = `✅ ${resultado.mensagem}`;
+                if (resultado.codigo_sala) {
+                    mensagemEl.innerText += `\nCódigo da sala: ${resultado.codigo_sala}`;
+                }
+                carregarSalas(); // Atualiza a lista após o cadastro
+            } else {
+                mensagemEl.innerText = `❌ Erro: ${resultado.detail}`;
+            }
+        });
+
+        async function carregarSalas() {
+            const lista = document.getElementById("listaSalas");
+            lista.innerHTML = "Carregando...";
+
+            try {
+                const response = await fetch("http://localhost:8000/salas");
+                const salas = await response.json();
+
+                if (salas.length === 0) {
+                    lista.innerHTML = "<li>Nenhuma sala cadastrada.</li>";
+                    return;
+                }
+
+                lista.innerHTML = "";
+                salas.forEach(sala => {
+                    const li = document.createElement("li");
+                    li.innerHTML = `<strong>Código:</strong> ${sala.codigo} |
+                                    <strong>Professor:</strong> ${sala.professor_nome} (${sala.professor_email})`;
+                    lista.appendChild(li);
+                });
+
+            } catch (err) {
+                lista.innerHTML = "<li>Erro ao carregar as salas.</li>";
+                console.error(err);
+            }
+        }
+
+        // Carrega a lista ao abrir a página
+        carregarSalas();
+    </script>
+</body>
+</html>

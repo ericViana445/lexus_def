@@ -4,7 +4,7 @@ import { useState } from "react"
 import "./Home.css"
 import Header from '../../components/header'
 import avatar from '../../assets/avatar.png'
-import bannerMural from '../../assets/banner_mural.png';
+import bannerMural from '../../assets/banner_mural.png'
 
 const placeholderAvatar = avatar
 
@@ -14,26 +14,22 @@ const Home = () => {
   const newsItems = [
     {
       id: 1,
-      title:
-        "Hugo Calderano, o mesatenista brasileiro, venceu a Copa do Mundo de tênis de mesa em Macau, na China. Ele é o primeiro atleta não asiático ou europeu a conquistar o título.",
+      title: "Hugo Calderano, o mesatenista brasileiro, venceu a Copa do Mundo de tênis de mesa em Macau, na China. Ele é o primeiro atleta não asiático ou europeu a conquistar o título.",
       image: "https://via.placeholder.com/300x200",
     },
     {
       id: 2,
-      title:
-        "Povos indígenas marcham durante o acampamento anual Terra Livre, onde discutem direitos, proteção territorial e seu papel na COP30, que acontecerá pela primeira vez na Amazônia.",
+      title: "Povos indígenas marcham durante o acampamento anual Terra Livre, onde discutem direitos, proteção territorial e seu papel na COP30, que acontecerá pela primeira vez na Amazônia.",
       image: "https://via.placeholder.com/300x200",
     },
     {
       id: 3,
-      title:
-        "Mulheres correm passando por barricadas da rua em chamas no distrito de Solino, em Porto Príncipe (Haiti), enquanto moradores pedem ajuda do governo e protestam contra a falta de segurança da cidade.",
+      title: "Mulheres correm passando por barricadas da rua em chamas no distrito de Solino, em Porto Príncipe (Haiti), enquanto moradores pedem ajuda do governo e protestam contra a falta de segurança da cidade.",
       image: "https://via.placeholder.com/300x200",
     },
     {
       id: 4,
-      title:
-        "Cientistas protestaram nos EUA contra os cortes de pessoal e restrições à pesquisa feitos por Trump. Desde seu retorno à Casa Branca, o republicano reduziu o financiamento federal para atividades científicas.",
+      title: "Cientistas protestaram nos EUA contra os cortes de pessoal e restrições à pesquisa feitos por Trump. Desde seu retorno à Casa Branca, o republicano reduziu o financiamento federal para atividades científicas.",
       image: "https://via.placeholder.com/300x200",
     },
   ]
@@ -87,56 +83,67 @@ const Home = () => {
 
           {activeTab === "Mural" && (
             <div className="mural-container">
-              {/* Header do Mural estilizado e ampliado */}
               <div className="mural-header">
                 <span>Port. Instrumental - LICOMP 25</span>
                 <img 
-  src={bannerMural} 
-  alt="Ilustração do mural" 
-  className="mural-illustration" 
-/>
-
+                  src={bannerMural} 
+                  alt="Ilustração do mural" 
+                  className="mural-illustration" 
+                />
               </div>
+
               <div className="mural-content">
-                <div className="post-input">
-                  <div className="user-avatar-small">
-                    <img src={placeholderAvatar} alt="Avatar" />
-                  </div>
-                  <input type="text" placeholder="Escreva um aviso para sua turma" className="post-text-input" />
-                </div>
 
+                {/* Campo de aviso com botão para manter estrutura igual */}
                 <div className="post-item">
-                  <div className="post-header">
-                    <div className="user-avatar-small">
-                      <img src={placeholderAvatar} alt="Avatar" />
-                    </div>
-                    <div className="post-info">
-                      <div className="post-author">Luis Barone</div>
-                      <div className="post-date">05 de Mai</div>
-                    </div>
-                  </div>
-                  <div className="post-body">
-                    <p>
-                      Boa tarde, turma! Referente a atividade 03 de "Debate Lateral", não esqueçam da imagem oficial.
-                      Boa avaliação a todos!
-                    </p>
-                  </div>
-                </div>
-
-                <div className="comment-input">
                   <div className="user-avatar-small">
                     <img src={placeholderAvatar} alt="Avatar" />
                   </div>
-                  <div className="comment-input-container">
-                    <input type="text" placeholder="Adicionar comentário para a turma..." className="comment-text-input" />
+                  <div className="post-content comment-input-container">
+                    <input type="text" placeholder="Escreva um aviso para sua turma" className="post-text-input" />
                     <button className="send-button">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7e3ff2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13" />
+                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
                       </svg>
                     </button>
                   </div>
                 </div>
+
+                {/* Postagem da atividade */}
+                <div className="post-item">
+                  <div className="user-avatar-small">
+                    <img src={placeholderAvatar} alt="Avatar" />
+                  </div>
+                  <div className="post-content">
+                    <div className="post-info">
+                      <div className="post-author">Luis Barone</div>
+                      <div className="post-date">05 de Mai</div>
+                    </div>
+                    <div className="post-body">
+                      <p>
+                        Boa tarde, turma! Referente a atividade 03 de “Debate Lateral”, não esqueçam da imagem oficial. Boa avaliação a todos!
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Campo de comentário */}
+                <div className="post-item">
+                  <div className="user-avatar-small">
+                    <img src={placeholderAvatar} alt="Avatar" />
+                  </div>
+                  <div className="post-content comment-input-container">
+                    <input type="text" placeholder="Adicionar comentário para a turma..." className="comment-text-input" />
+                    <button className="send-button">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7e3ff2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <line x1="22" y1="2" x2="11" y2="13" />
+                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+
               </div>
             </div>
           )}
