@@ -5,6 +5,7 @@ import "./Home.css"
 import Header from '../../components/header'
 import avatar from '../../assets/avatar.png'
 import bannerMural from '../../assets/banner_mural.png'
+import sendIcon from '../../assets/send.png' // ✅ Ícone adicionado
 
 const placeholderAvatar = avatar
 
@@ -102,10 +103,7 @@ const Home = () => {
                   <div className="post-content comment-input-container">
                     <input type="text" placeholder="Escreva um aviso para sua turma" className="post-text-input" />
                     <button className="send-button">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#ffffff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13" />
-                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                      </svg>
+                      <img src={sendIcon} alt="Enviar" style={{ width: "24px", height: "24px" }} />
                     </button>
                   </div>
                 </div>
@@ -136,10 +134,7 @@ const Home = () => {
                   <div className="post-content comment-input-container">
                     <input type="text" placeholder="Adicionar comentário para a turma..." className="comment-text-input" />
                     <button className="send-button">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#7e3ff2" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <line x1="22" y1="2" x2="11" y2="13" />
-                        <polygon points="22 2 15 22 11 13 2 9 22 2" />
-                      </svg>
+                      <img src={sendIcon} alt="Enviar" style={{ width: "24px", height: "24px" }} />
                     </button>
                   </div>
                 </div>

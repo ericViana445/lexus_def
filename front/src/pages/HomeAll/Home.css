@@ -207,6 +207,8 @@ body {
     margin-right: -15vw;
 }
 
+.send-button {}
+
 .mural-header span {
     flex: 1;
     font-size: 5rem;
