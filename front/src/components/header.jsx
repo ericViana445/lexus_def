@@ -1,8 +1,8 @@
-// Header.jsx
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 import logoBarra from '../assets/lexus_logo_barra.png';
 import avatar from '../assets/perfil.png';
-import '../pages/Chat/chat.css'; // você pode mover apenas os estilos do header para um novo CSS, se preferir
+import './header.css'; // ideal separar o css do header em outro arquivo
 
 function Header() {
   const [perfilAberto, setPerfilAberto] = useState(false);
@@ -10,19 +10,23 @@ function Header() {
   return (
     <header className="header">
       <div className="logo">
-        <img src={logoBarra} alt="Logo Lexus" />
+        <Link to="/">
+          <img src={logoBarra} alt="Logo Lexus" />
+        </Link>
       </div>
       <nav>
-        <a href="#">Home</a>
+        <Link to="/home">Home</Link>
 
         <div className="produzir-container">
           <span className="produzir-toggle">Produzir ▼</span>
           <div className="produzir-menu">
-            <a href="#">Fotografia</a>
-            <a href="#">Podcast</a>
-            <a href="#">Tema Proposto</a>
+            <Link to="/fotografia">Fotografia</Link>
+            <Link to="/podcast">Podcast</Link>
+            <Link to="/tema">Tema Proposto</Link>
           </div>
         </div>
+
+        <Link to="/chat">Chat</Link>
 
         <div className="perfil-container" onClick={() => setPerfilAberto(!perfilAberto)}>
           <span className="perfil-toggle">Perfil</span>

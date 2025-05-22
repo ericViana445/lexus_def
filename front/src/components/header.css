@@ -1,0 +1,224 @@
+/* Reset */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap');
+* {
+    font-family: 'Poppins', sans-serif;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body,
+html {
+    font-family: 'Poppins', sans-serif;
+}
+
+
+/* Página geral */
+
+.chat-page {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+
+/* Header */
+
+.header {
+    background-color: #226680;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2rem 2rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+}
+
+.logo img {
+    height: 70px;
+    width: auto;
+    margin-left: 10%;
+    object-fit: contain;
+}
+
+
+/* Navigation */
+
+nav {
+    display: flex;
+    gap: 4.2rem;
+    align-items: center;
+    height: 70px;
+    margin-right: 6%;
+}
+
+nav a,
+.produzir-toggle {
+    color: white;
+    text-decoration: none;
+    padding: 0.4rem 3rem;
+    border-radius: 50px;
+    font-weight: 500;
+    font-size: 250%;
+    background-color: transparent;
+    transition: 0.3s;
+}
+
+nav a.active {
+    background-color: #184a5a;
+}
+
+nav a:hover,
+.produzir-toggle:hover {
+    background-color: #184a5a;
+    color: white;
+}
+
+nav a:last-child {
+    border: 2px solid white;
+    padding: 0.4rem 3rem;
+}
+
+
+/* Dropdown */
+
+.perfil-container {
+    position: relative;
+    cursor: pointer;
+}
+
+.perfil-toggle {
+    font-size: 250%;
+    font-weight: 500;
+    padding: 0.4rem 3rem;
+    border-radius: 50px;
+    color: white;
+    border: 2px solid white;
+    transition: background-color 0.3s;
+}
+
+.perfil-toggle:hover {
+    background-color: #184a5a;
+}
+
+.perfil-dropdown {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: white;
+    color: #226680;
+    border-radius: 15px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+    min-width: 280px;
+    padding: 3rem;
+    z-index: 1000;
+    font-family: 'Poppins', sans-serif;
+    font-size: 180%;
+    margin-top: 3.5%;
+}
+
+.perfil-info {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.perfil-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+}
+
+.perfil-nome {
+    font-size: 2.2rem !important;
+    /* Aumentado */
+    color: #226680;
+}
+
+.perfil-email {
+    font-size: 1rem;
+    /* Aumentado */
+    font-weight: 400;
+    color: #444;
+}
+
+.sair-botao {
+    width: 100%;
+    padding: 10px 0;
+    background-color: #226680;
+    color: white;
+    font-weight: bold;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    font-size: 1.5rem;
+}
+
+.sair-botao:hover {
+    background-color: #154c5c;
+}
+
+
+/* Dropdown  Produzir*/
+
+.produzir-container {
+    position: relative;
+}
+
+.produzir-menu {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 5;
+    background-color: white;
+    border-radius: 20px;
+    padding: 1rem 0.5rem;
+    box-shadow: px 8px 18px rgba(0, 0, 0, 0.30);
+    z-index: 1000;
+    min-width: 460px;
+    text-align: left;
+    margin-top: 2%;
+}
+
+.produzir-menu::before {
+    content: "Produções textuais por:";
+    display: block;
+    color: #226680;
+    font-weight: bold;
+    font-size: 1.8rem;
+    margin-bottom: 0.8rem;
+    border-bottom: 2px solid #c4d6dcea;
+    padding-bottom: 0.3rem;
+    text-align: center;
+}
+
+.produzir-menu a {
+    display: block;
+    padding: 0.6rem 1.1;
+    color: #333;
+    text-decoration: none;
+    font-size: 1.6rem;
+    transition: background-color 0.3s, padding-left 0.3s;
+}
+
+.produzir-menu a:hover {
+    background-color: #f4f4f4;
+    color: black;
+    padding-left: 0.5rem;
+}
+
+.produzir-container:hover .produzir-menu {
+    display: block;
+}

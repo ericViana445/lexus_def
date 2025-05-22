@@ -7,7 +7,8 @@ import OpcaoCadastro from './pages/OpcaoCadastro/index_cad.jsx';
 import CadastroAluno from './pages/CadastroAluno/index_cad_aluno.jsx';
 import CadastroProfessor from './pages/CadastroProfessor/index_cad_prof.jsx';
 import Chat from './pages/Chat/chat.jsx';
-import Login from './pages/Login/login.jsx'; // ✅ não esquecer de criar esse componente
+import Login from './pages/Login/login.jsx';
+import Tema from './pages/Tema/tema.jsx'
 
 const App = () => {
   console.log("✅ App carregado");
@@ -22,6 +23,7 @@ const App = () => {
         <Route path="/cadastro-professor" element={<CadastroProfessor />} />
         <Route path="/chat" element={<Chat />} />
         <Route path="/login" element={<Login />} />
+        <Route path="/tema" element={<Tema />} />
       </Routes>
     </BrowserRouter>
   );
