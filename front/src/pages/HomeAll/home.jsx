@@ -126,7 +126,7 @@ const Home = () => {
                   <div className="post-content">
                     <div className="post-info">
                       <div className="post-author">Luis Barone</div>
-                      <div className="post-date">05 de Mai</div>
+                      <div className="post-datee">05 de Maio</div>
                     </div>
                     <div className="post-body">
                       <p>
