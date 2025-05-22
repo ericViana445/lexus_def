@@ -103,7 +103,7 @@ const Home = () => {
                   <div className="post-content comment-input-container">
                     <input type="text" placeholder="Escreva um aviso para sua turma" className="post-text-input" />
                     <button className="send-button">
-                      <img src={sendIcon} alt="Enviar" style={{ width: "24px", height: "24px" }} />
+                      <img src={sendIcon} alt="Enviar" style={{ width: "42px", height: "44px" }} />
                     </button>
                   </div>
                 </div>
@@ -134,7 +134,7 @@ const Home = () => {
                   <div className="post-content comment-input-container">
                     <input type="text" placeholder="Adicionar comentário para a turma..." className="comment-text-input" />
                     <button className="send-button">
-                      <img src={sendIcon} alt="Enviar" style={{ width: "24px", height: "24px" }} />
+                      <img src={sendIcon} alt="Enviar" style={{ width: "44px", height: "44px" }} />
                     </button>
                   </div>
                 </div>
