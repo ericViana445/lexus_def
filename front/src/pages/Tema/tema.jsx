@@ -1,7 +1,7 @@
  import React from 'react';
 import './tema.css';
 import Header from '../../components/header';
-import dorminhoco from '../../assets/dorminhoco.png';
+import dorminhoco from '../../assets/dorminhoco1.png';
 import enviarTema from '../../assets/EnviarTema2.png';
 
 const Tema = () => {
