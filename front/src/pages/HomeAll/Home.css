@@ -174,7 +174,6 @@ body {
     background-color: #ffffff;
     color: white;
     font-size: 2rem;
-    font-weight: bold;
     padding: 4rem 9rem;
     border-radius: 20px;
     margin-top: 2rem;
@@ -190,7 +189,7 @@ body {
 }
 
 .mural-header {
-    background-color: #226680;
+    background: rgba(34, 102, 128, 0.72);
     color: white;
     font-size: 2rem;
     font-weight: bold;
@@ -225,7 +224,7 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.500);
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
     width: calc(100% + 0.85rem);
     /* 30vw - 17.1% ≈ 24.9vw */
     padding: 1.78rem 1rem;
@@ -247,20 +246,22 @@ body {
     padding: 1.78rem 1rem;
 }
 
-.user-avatar-small img {
-    width: 48px;
-    height: 48px;
+.user-avatar-small img,
+.user-avatar-small {
+    width: 65px;
+    height: 65px;
     border-radius: 50%;
 }
 
 .post-text-input,
 .comment-text-input {
     flex: 1;
-    padding: 0.5rem 23rem;
-    font-size: 1.1rem;
+    padding: 0rem 4rem;
+    font-size: 1.5rem;
     border: none;
     border-radius: 50px;
-    background-color: #f9f9f9;
+    background-color: #eeeeee;
+    color: #222;
 }
 
 .send-button {
@@ -287,12 +288,18 @@ body {
 
 .post-author {
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 2rem;
 }
 
 .post-date {
-    font-size: 0.85rem;
+    font-size: 1.2rem;
     color: #666;
+}
+
+.post-body {
+    font-size: 2.3rem;
+    margin-top: 10px;
+    color: #525151;
 }
 
 .mural-content {
