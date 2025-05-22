@@ -1,0 +1,300 @@
+/* Garante que o app ocupe toda a altura e permita scroll */
+
+html,
+body {
+    height: auto;
+    min-height: 100vh;
+    margin: 0;
+    padding: 0;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 0.85rem;
+    overflow-x: auto;
+    overflow-y: scroll;
+}
+
+
+/* Container principal */
+
+.app-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    width: 100%;
+}
+
+
+/* Organiza o conteúdo horizontalmente */
+
+.lexus-container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 2rem 4vw;
+    box-sizing: border-box;
+    max-width: 6000px;
+}
+
+.content-section {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+
+/* Seção de navegação secundária */
+
+.secondary-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-bottom: 1rem;
+}
+
+
+/* Botões de aba */
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 2rem;
+    width: 100%;
+}
+
+.tab {
+    padding: 0.5rem 8rem;
+    font-size: 4.0rem;
+    font-weight: bold;
+    border-radius: 100px;
+    color: #226680;
+}
+
+.tab.active {
+    background-color: rgba(34, 102, 128, 0.28);
+    color: #226680;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Mural */
+
+.mural-content {
+    background-color: #ffffff;
+    color: white;
+    font-size: 2rem;
+    padding: 4rem 9rem;
+    border-radius: 20px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.0);
+    width: calc(100% + 30vw);
+    margin-left: -15vw;
+    margin-right: -15vw;
+}
+
+.mural-header {
+    background: rgba(34, 102, 128, 0.72);
+    color: white;
+    font-size: 2rem;
+    font-weight: bold;
+    padding: 4rem 9rem;
+    border-radius: 20px;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
+    width: calc(100% + 30vw);
+    margin-left: -15vw;
+    margin-right: -15vw;
+}
+
+.mural-header span {
+    flex: 1;
+    font-size: 5rem;
+}
+
+.mural-illustration {
+    height: 200px;
+}
+
+.post-input {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
+    width: calc(100% + 0.85rem);
+    padding: 1.78rem 1rem;
+}
+
+.post-item,
+.comment-input {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.2rem;
+    margin-bottom: -1rem;
+    color: black;
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
+    width: calc(100% + 0.85rem);
+    padding: 1.78rem 1rem;
+}
+
+.user-avatar-small img,
+.user-avatar-small {
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+}
+
+.post-text-input,
+.comment-text-input {
+    flex: 1;
+    padding: 0rem 4rem;
+    font-size: 1.5rem;
+    border: none;
+    border-radius: 50px;
+    background-color: #eeeeee;
+    color: #222;
+}
+
+.send-button {
+    background-color: #e0d8f0;
+    border: none;
+    border-radius: 50%;
+    width: 48px;
+    height: 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25);
+}
+
+.send-button svg {
+    stroke: #7e3ff2;
+}
+
+.post-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.post-author {
+    font-weight: bold;
+    font-size: 2rem;
+}
+
+.post-date {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.post-body {
+    font-size: 2.3rem;
+    margin-top: 10px;
+    color: #525151;
+}
+
+.mural-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+/* Produções */
+
+.news-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 4rem;
+    justify-items: center;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 2rem 0;
+}
+
+.news-card {
+    background: white;
+    border-radius: 12px;
+    padding: 2.5rem;
+    height: 600px;
+    width: 400px;
+    max-width: 500px;
+    font-size: 1.13rem;
+    box-shadow: 0 15px 6px rgba(0, 0, 0, 0.25);
+}
+
+.news-card:hover {
+    transform: scale(1.02);
+}
+
+.news-image img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+}
+
+.news-content {
+    padding: 1rem;
+    color: #333;
+    line-height: 5rem;
+    margin-top: 9rem;
+}
+
+.news-content p {
+    font-size: 1.4rem;
+    line-height: 1.7rem;
+    color: #333;
+}
+
+.read-more-btn {
+    background-color: #217193;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 1.5rem 1.9rem;
+    margin-top: 0.5rem;
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 1.3rem;
+}
+
+
+/* Responsividade adicional */
+
+@media (max-width: 768px) {
+    .tabs {
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    .user-profile {
+        justify-content: center;
+        text-align: center;
+        flex-direction: column;
+        gap: 0.3rem;
+    }
+    .lexus-container {
+        padding: 1rem 2vw;
+    }
+    .mural-header {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 1.5rem 2rem;
+    }
+    .mural-illustration {
+        margin-top: 1rem;
+        height: 50px;
+    }
+}
