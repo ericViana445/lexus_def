@@ -7,9 +7,10 @@ import iconSenha from '../../assets/senha.png';
 import iconConfirmar from '../../assets/confirmar.png';
 import eyesComDesc from '../../assets/eyes1.png';
 import iconeProfessor from '../../assets/iconeProfessor.png';
-import { Link } from 'react-router-dom';
 
 const CadastroProfessor = () => {
+  const navigate = useNavigate(); // ✅ inicializa o hook de navegação
+
   const [formData, setFormData] = useState({
     nome: '',
     email: '',
@@ -23,27 +24,20 @@ const CadastroProfessor = () => {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validação: senha e confirmação devem ser iguais
     if (formData.senha !== formData.confirmar) {
       alert("As senhas não coincidem.");
       return;
     }
 
-    // Monta o payload sem o campo 'confirmar'
     const payload = {
       nome: formData.nome,
       email: formData.email,
       senha: formData.senha,
-      cargo: formData.cargo,
-      sala: formData.cargo === "aluno" ? formData.sala : undefined
+      cargo: formData.cargo
     };
-
-    // Debug opcional
-    console.log("Enviando payload:", payload);
 
     try {
       const response = await fetch("http://127.0.0.1:8000/cadastrar", {
@@ -60,21 +54,22 @@ const CadastroProfessor = () => {
       }
 
       const data = await response.json();
-      alert(`Sucesso: ${data.mensagem}\nCódigo da Sala: ${data.codigo_sala || "N/A"}`);
+      alert(`✅ Sucesso: ${data.mensagem}\nCódigo da Sala: ${data.codigo_sala || "N/A"}`);
+
+      // ✅ Redireciona após sucesso
+      navigate('/home');
+
     } catch (err) {
-      alert(`Erro: ${err.message}`);
+      alert(`❌ Erro: ${err.message}`);
     }
   };
 
-
   return (
     <div className="contener2">
-      {/* Imagem à esquerda */}
       <div className="imagem-lateral">
         <img src={eyesComDesc} alt="Imagem lateral" className="foto-lateral" />
       </div>
 
-      {/* Formulário à direita */}
       <div className="conteudo-direito">
         <div className="cabecalho-professor">
           <h2 className="titulo">
@@ -93,6 +88,7 @@ const CadastroProfessor = () => {
               placeholder="Nome"
               value={formData.nome}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -104,6 +100,7 @@ const CadastroProfessor = () => {
               placeholder="Email"
               value={formData.email}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -115,6 +112,7 @@ const CadastroProfessor = () => {
               placeholder="Senha"
               value={formData.senha}
               onChange={handleChange}
+              required
             />
           </div>
 
@@ -126,15 +124,13 @@ const CadastroProfessor = () => {
               placeholder="Confirmar Senha"
               value={formData.confirmar}
               onChange={handleChange}
+              required
             />
           </div>
 
-
-
-          <button className="botao-final" onClick={() => navigate('/chat')}>
-            Gerar Código
+          <button type="submit" className="botao-final">
+            Cadastrar e Gerar Sala
           </button>
-
         </form>
       </div>
     </div>
