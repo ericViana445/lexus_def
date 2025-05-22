@@ -49,11 +49,11 @@ body {
 }
 
 .post-description {
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   line-height: 1.9;
   margin-top: 4rem;
   font-weight: 400;
-  font-weight: 700; /* Negrito */
+  
 }
 
 .post-image {
@@ -82,7 +82,7 @@ body {
 
 .debate-button {
   background-color: white;
-  border: 2px solid #0b3c4d;
+  border: 4px solid #226680;
   border-radius: 50px;
   padding: 2rem 8rem;
   color: #0b3c4d;
@@ -91,6 +91,7 @@ body {
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  
 }
 
 .debate-button:hover {
