@@ -24,8 +24,6 @@ function Header() {
           </div>
         </div>
 
-        <a href="#" className="active">Chat</a>
-
         <div className="perfil-container" onClick={() => setPerfilAberto(!perfilAberto)}>
           <span className="perfil-toggle">Perfil</span>
           {perfilAberto && (
