@@ -56,13 +56,9 @@ body {
 .tabs {
     display: flex;
     justify-content: center;
-    /* <-- centraliza os botões horizontalmente */
     align-items: center;
-    /* <-- (opcional) alinha verticalmente */
     gap: 2rem;
-    /* espaço entre os botões */
     width: 100%;
-    /* ocupa toda a largura disponível */
 }
 
 .tab {
@@ -80,107 +76,6 @@ body {
 }
 
 
-/* turmas */
-
-.turmas-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 12rem;
-    justify-items: center;
-    width: 100%;
-    box-sizing: border-box;
-}
-
-.turma-card {
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    padding: 1.5rem;
-    height: 450px;
-    width: 100%;
-    max-width: 400px;
-    font-size: 1.13rem;
-    box-shadow: 0 15px 6px rgba(0, 0, 0, 0.25);
-}
-
-.turma-header {
-    background: rgba(34, 102, 128, 0.72);
-    padding: 1.0rem;
-    min-height: 120px;
-    border-radius: 0px 0px 0 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    position: relative;
-}
-
-.turma-codigo {
-    font-size: 1.2rem;
-    color: #f1f1f1;
-    margin-top: 0.3rem;
-}
-
-.professor-avatar {
-    position: absolute;
-    top: 75px;
-    right: 12px;
-    width: 75px;
-    height: 75px;
-}
-
-.professor-avatar img {
-    width: 75px;
-    height: 75px;
-    border-radius: 100%;
-}
-
-.turma-title {
-    font-size: 1.9rem;
-    font-weight: bold;
-}
-
-.turma-professor {
-    font-size: 1.5rem;
-    color: #ffffff;
-}
-
-.add-turma-container {
-    height: 500px;
-    width: 100%;
-    max-width: 400px;
-    background-color: #f9f9f9;
-    border-radius: 12px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.add-turma-button {
-    background-color: #226680;
-    border: none;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-    transition: transform 0.2s ease;
-}
-
-.add-turma-button:hover {
-    transform: scale(1.05);
-}
-
-.add-turma-text {
-    margin-top: 0.75rem;
-    font-size: 2rem;
-    font-weight: 600;
-    color: #226680;
-}
-
-
 /* Mural */
 
 .mural-content {
@@ -195,7 +90,6 @@ body {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.0);
-    /* NOVO: ocupa largura total além do container */
     width: calc(100% + 30vw);
     margin-left: -15vw;
     margin-right: -15vw;
@@ -214,7 +108,6 @@ body {
     justify-content: space-between;
     align-items: center;
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.15);
-    /* NOVO: ocupa largura total além do container */
     width: calc(100% + 30vw);
     margin-left: -15vw;
     margin-right: -15vw;
@@ -239,7 +132,6 @@ body {
     gap: 1rem;
     box-shadow: 0 0 15px rgba(0, 0, 0, 0.15);
     width: calc(100% + 0.85rem);
-    /* 30vw - 17.1% ≈ 24.9vw */
     padding: 1.78rem 1rem;
 }
 
@@ -253,9 +145,8 @@ body {
     display: flex;
     align-items: flex-start;
     gap: 1rem;
-    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.500);
+    box-shadow: 0 8px 8px rgba(0, 0, 0, 0.5);
     width: calc(100% + 0.85rem);
-    /* 30vw - 17.1% ≈ 24.9vw */
     padding: 1.78rem 1rem;
 }
 
@@ -304,8 +195,8 @@ body {
     font-size: 2rem;
 }
 
-.post-datee {
-    font-size: 1.4rem;
+.post-date {
+    font-size: 1.2rem;
     color: #666;
 }
 
@@ -328,7 +219,6 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
     gap: 4rem;
-    /* ou 8rem se quiser mais espaço */
     justify-items: center;
     width: 100%;
     box-sizing: border-box;
