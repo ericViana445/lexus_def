@@ -2,13 +2,14 @@
 import './tema.css';
 import Header from '../../components/header';
 import dorminhoco from '../../assets/dorminhoco.png';
-import enviarTema from '../../assets/EnviarTema.png';
+import enviarTema from '../../assets/EnviarTema2.png';
 
 const Tema = () => {
   return (
     <div>
       <Header />
       <div className="tema-container">
+        {/* Coluna Esquerda */}
         <div className="tema-left">
           <h2 className="tema-title">Produção</h2>
           <p className="tema-subtitle">
@@ -23,6 +24,7 @@ const Tema = () => {
           />
         </div>
 
+        {/* Coluna Central */}
         <div className="tema-center">
           <input
             type="text"
@@ -33,8 +35,11 @@ const Tema = () => {
             placeholder="Digite aqui seu texto..."
             className="tema-textarea"
           />
+          {/* Botão Enviar movido para cá */}
+          <button className="tema-enviar-btn">Enviar</button>
         </div>
 
+        {/* Coluna Direita */}
         <div className="tema-right">
           <div className="tema-upload-box">
             <img
@@ -44,7 +49,6 @@ const Tema = () => {
             />
             <p className="tema-upload-text">Adicione seu material de apoio aqui.</p>
           </div>
-          <button className="tema-enviar-btn">Enviar</button>
         </div>
       </div>
     </div>
