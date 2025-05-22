@@ -5,7 +5,14 @@ import "./Home.css"
 import Header from '../../components/header'
 import avatar from '../../assets/avatar.png'
 import bannerMural from '../../assets/banner_mural.png'
-import sendIcon from '../../assets/send.png' // ✅ Ícone adicionado
+import sendIcon from '../../assets/send.png'
+
+// ✅ Importando as imagens reais das produções
+import prod1 from "../../assets/exempo_de_producao1.jpg"
+import prod2 from "../../assets/exempo_de_producao2.jpg"
+import prod3 from "../../assets/exempo_de_producao3.jpg"
+import prod4 from "../../assets/exempo_de_producao4.jpg"
+import prod5 from "../../assets/exempo_de_producao5.jpg"
 
 const placeholderAvatar = avatar
 
@@ -16,22 +23,27 @@ const Home = () => {
     {
       id: 1,
       title: "Hugo Calderano, o mesatenista brasileiro, venceu a Copa do Mundo de tênis de mesa em Macau, na China. Ele é o primeiro atleta não asiático ou europeu a conquistar o título.",
-      image: "https://via.placeholder.com/300x200",
+      image: prod1,
     },
     {
       id: 2,
       title: "Povos indígenas marcham durante o acampamento anual Terra Livre, onde discutem direitos, proteção territorial e seu papel na COP30, que acontecerá pela primeira vez na Amazônia.",
-      image: "https://via.placeholder.com/300x200",
+      image: prod2,
     },
     {
       id: 3,
       title: "Mulheres correm passando por barricadas da rua em chamas no distrito de Solino, em Porto Príncipe (Haiti), enquanto moradores pedem ajuda do governo e protestam contra a falta de segurança da cidade.",
-      image: "https://via.placeholder.com/300x200",
+      image: prod3,
     },
     {
       id: 4,
-      title: "Cientistas protestaram nos EUA contra os cortes de pessoal e restrições à pesquisa feitos por Trump. Desde seu retorno à Casa Branca, o republicano reduziu o financiamento federal para atividades científicas.",
-      image: "https://via.placeholder.com/300x200",
+      title: "Cientistas protestaram nos EUA contra os cortes de pessoal e restrições à pesquisa feitos por Trump.",
+      image: prod4,
+    },
+    {
+      id: 5,
+      title: "Trabalhadores inspecionam danos à estrutura da usina de Chernobyl após ataque aéreo com drones.",
+      image: prod5,
     },
   ]
 
@@ -61,6 +73,7 @@ const Home = () => {
                     <div className="turma-header">
                       <div className="turma-title">Port. Instrumental - LICOMP...</div>
                       <div className="turma-professor">Prof. Luis Barone</div>
+                      <div className="turma-codigo">Código da Turma: 00000</div>
                       <div className="professor-avatar">
                         <img src={placeholderAvatar} alt="Professor" />
                       </div>
@@ -94,8 +107,6 @@ const Home = () => {
               </div>
 
               <div className="mural-content">
-
-                {/* Campo de aviso com botão para manter estrutura igual */}
                 <div className="post-item">
                   <div className="user-avatar-small">
                     <img src={placeholderAvatar} alt="Avatar" />
@@ -108,7 +119,6 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Postagem da atividade */}
                 <div className="post-item">
                   <div className="user-avatar-small">
                     <img src={placeholderAvatar} alt="Avatar" />
@@ -126,7 +136,6 @@ const Home = () => {
                   </div>
                 </div>
 
-                {/* Campo de comentário */}
                 <div className="post-item">
                   <div className="user-avatar-small">
                     <img src={placeholderAvatar} alt="Avatar" />
@@ -138,7 +147,6 @@ const Home = () => {
                     </button>
                   </div>
                 </div>
-
               </div>
             </div>
           )}
