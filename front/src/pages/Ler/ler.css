@@ -1,0 +1,90 @@
+ body {
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #ffffff;
+  color: #333;
+}
+
+
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2rem;
+  height: calc(100vh - 80px); /* ocupa a tela toda exceto header */
+}
+
+.post-card {
+  display: flex;
+  width: 100%;
+  max-width: 1200px;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+.post-text {
+  flex: 1;
+}
+
+.post-text h2 {
+  color: #144b7d;
+  margin-bottom: 0.3rem;
+}
+
+.post-date {
+  color: #2ea3a4;
+  font-weight: 500;
+  margin-top: 0;
+}
+
+.post-description {
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+.debate-button-container {
+  margin-top: 1rem;
+}
+
+.debate-button {
+  background-color: white;
+  border: 2px solid #0b3c4d;
+  border-radius: 25px;
+  padding: 0.6rem 1.5rem;
+  color: #0b3c4d;
+  font-weight: bold;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.debate-button:hover {
+  background-color: #0b3c4d;
+  color: white;
+}
+
+.post-image {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.post-image img {
+  width: 100%;
+  max-width: 500px;
+  height: auto;
+  border-radius: 1rem;
+  object-fit: cover;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .post-card {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .post-image {
+    max-width: 100%;
+  }
+}
