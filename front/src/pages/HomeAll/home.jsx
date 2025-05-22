@@ -1,5 +1,5 @@
 "use client"
-
+import { Link } from 'react-router-dom';
 import { useState } from "react"
 import "./Home.css"
 import Header from '../../components/header'
@@ -37,12 +37,12 @@ const Home = () => {
     },
     {
       id: 4,
-      title: "Cientistas protestaram nos EUA contra os cortes de pessoal e restrições à pesquisa feitos por Trump.",
+      title: "Cientistas protestaram nos EUA contra os cortes de pessoal e restrições à pesquisa feitos por Trump. O caso se deve ao grande aumento de corte de gastos imposto pelo presidente",
       image: prod4,
     },
     {
       id: 5,
-      title: "Trabalhadores inspecionam danos à estrutura da usina de Chernobyl após ataque aéreo com drones.",
+      title: "Trabalhadores inspecionam danos à estrutura da usina de Chernobyl após ataque aéreo com drones. O avanço da tecnologia, propos o avanço em locais que nunca iriamos sem ela.",
       image: prod5,
     },
   ]
@@ -160,7 +160,7 @@ const Home = () => {
                   </div>
                   <div className="news-content">
                     <p>{item.title}</p>
-                    <button className="read-more-btn">Ler mais</button>
+                    <Link to="/lermais" className="read-more-btn">Ler mais</Link>
                   </div>
                 </div>
               ))}
