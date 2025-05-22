@@ -5,7 +5,7 @@ import iconEmail from '../../assets/email.png';
 import iconSenha from '../../assets/senha.png';
 import iconConfirmar from '../../assets/confirmar.png';
 import eyesComDesc from '../../assets/eyes1.png';
-import iconeAluno from '../../assets/iconeAluno1.png';
+import iconeAluno from '../../assets/iconeAluno2.png';
 import { useNavigate } from 'react-router-dom';
 
 const IndexCadAluno = () => {
