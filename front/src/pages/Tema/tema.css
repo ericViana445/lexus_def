@@ -1,10 +1,12 @@
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap');
+
 .tema-container {
   display: flex;
   padding: 40px;
   gap: 40px;
   justify-content: space-between;
   background-color: #fff;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Poppins', sans-serif; /* alterado para Poppins */
   min-height: 100vh; /* Adicionado para ocupar a altura total da tela */
 }
 
@@ -13,19 +15,19 @@
 }
 
 .tema-title {
-  font-size: 40px;
+  font-size: 60px;
   color: #226680;
   font-weight: 800;
 }
 
 .tema-subtitle {
-  font-size: 22px;
+  font-size: 27px;
   color: #226680;
   margin-bottom: 20px;
 }
 
 .tema-mascote {
-    width: 400px;       /* aumentou o tamanho */
+  width: 400px;       /* aumentou o tamanho */
   margin-top: 300px;   /* aumentou a distância do topo */
 }
 
@@ -42,6 +44,7 @@
   border-radius: 30px;
   border: 5px solid  #226680;
   outline: none;
+  font-family: 'Poppins', sans-serif; /* para inputs também */
 }
 
 .tema-textarea {
@@ -52,6 +55,7 @@
   border: 5px solid #226680;
   resize: none;
   outline: none;
+  font-family: 'Poppins', sans-serif; /* para textarea */
 }
 
 .tema-right {
@@ -77,6 +81,7 @@
   color: #226680;
   box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.15);
   padding: 20px;
+  font-family: 'Poppins', sans-serif; /* para o texto da caixa */
 }
 
 .tema-upload-icon {
@@ -95,6 +100,7 @@
   box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
   cursor: pointer;
   transition: 0.3s ease;
+  font-family: 'Poppins', sans-serif; /* para o botão */
 }
 
 .tema-enviar-btn:hover {

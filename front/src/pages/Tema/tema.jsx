@@ -11,7 +11,11 @@ const Tema = () => {
       <div className="tema-container">
         <div className="tema-left">
           <h2 className="tema-title">Produção</h2>
-          <p className="tema-subtitle"><strong>Temática:</strong> Tema atualidades</p>
+          <p className="tema-subtitle">
+            <strong>Temática:</strong> Tema
+            <br />
+            atualidades
+          </p>
           <img
             src={dorminhoco}
             alt="Dorminhoco"
@@ -38,7 +42,7 @@ const Tema = () => {
               alt="Enviar Tema"
               className="tema-upload-icon"
             />
-            <p>Adicione seu material de apoio aqui.</p>
+            <p className="tema-upload-text">Adicione seu material de apoio aqui.</p>
           </div>
           <button className="tema-enviar-btn">Enviar</button>
         </div>
