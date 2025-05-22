@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Login + Publicação</title>
+</head>
+<body>
+  <h2>Login do Aluno</h2>
+  <form id="formLogin">
+    <label>Email:</label><br />
+    <input type="email" id="login_email" value="teste@gmail.com" required /><br /><br />
+
+    <label>Senha:</label><br />
+    <input type="password" id="login_senha" value="123456" required /><br /><br />
+
+    <button type="submit">Entrar</button>
+  </form>
+
+  <p id="mensagem_login"></p>
+
+  <hr />
+
+  <h2>Nova Publicação</h2>
+  <form id="formPub" style="display:none;">
+    <input type="hidden" id="email_aluno" />
+    <input type="hidden" id="codigo_sala" />
+
+    <label>Tipo de Publicação:</label><br />
+    <select id="tipo" required>
+      <option value="podcast">Podcast</option>
+      <option value="fotografia">Fotografia</option>
+      <option value="temática">Temática</option>
+    </select><br /><br />
+
+    <label>Título:</label><br />
+    <input type="text" id="titulo" required /><br /><br />
+
+    <label>Conteúdo:</label><br />
+    <textarea id="conteudo" rows="4" cols="50" required></textarea><br /><br />
+
+    <label>Imagem (opcional):</label><br />
+    <input type="file" id="imagem" accept="image/*" /><br /><br />
+
+    <button type="submit">Publicar</button>
+  </form>
+
+  <p id="mensagem_publicacao"></p>
+
+  <script>
+    const formLogin = document.getElementById("formLogin");
+    const formPub = document.getElementById("formPub");
+
+    let salaAluno = "";
+
+    formLogin.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const email = document.getElementById("login_email").value;
+      const senha = document.getElementById("login_senha").value;
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/login", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email, senha })
+        });
+
+        const result = await res.json();
+
+        if (!res.ok) {
+          document.getElementById("mensagem_login").innerText = `❌ Erro: ${result.detail}`;
+          return;
+        }
+
+        // ✅ Sucesso: preenchendo dados no formulário de publicação
+        document.getElementById("mensagem_login").innerText = `✅ Login realizado com sucesso!`;
+        document.getElementById("email_aluno").value = result.email;
+        document.getElementById("codigo_sala").value = result.sala;
+        salaAluno = result.sala;
+
+        formPub.style.display = "block"; // mostra o formulário de publicação
+      } catch (err) {
+        console.error(err);
+        document.getElementById("mensagem_login").innerText = "❌ Erro ao conectar ao servidor.";
+      }
+    });
+
+    formPub.addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const formData = new FormData();
+      formData.append("email_aluno", document.getElementById("email_aluno").value);
+      formData.append("codigo_sala", document.getElementById("codigo_sala").value);
+      formData.append("tipo", document.getElementById("tipo").value);
+      formData.append("titulo", document.getElementById("titulo").value);
+      formData.append("conteudo", document.getElementById("conteudo").value);
+
+      const imagemInput = document.getElementById("imagem");
+      if (imagemInput.files.length > 0) {
+        formData.append("imagem", imagemInput.files[0]);
+      }
+
+      try {
+        const res = await fetch("http://127.0.0.1:8000/publicar", {
+          method: "POST",
+          body: formData
+        });
+
+        const result = await res.json();
+        document.getElementById("mensagem_publicacao").innerText =
+          res.ok ? "✅ Publicação enviada com sucesso!" : `❌ Erro: ${result.detail}`;
+      } catch (err) {
+        console.error(err);
+        document.getElementById("mensagem_publicacao").innerText = "❌ Erro ao conectar ao servidor.";
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,10 +1,13 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel, EmailStr, field_validator
-from fastapi.middleware.cors import CORSMiddleware
-from typing import Literal
+import os
+import shutil
+import uuid
 import sqlite3
 import random
 import string
+from fastapi import FastAPI, HTTPException, UploadFile, Form, File
+from pydantic import BaseModel, EmailStr, field_validator
+from fastapi.middleware.cors import CORSMiddleware
+from typing import Literal
 
 app = FastAPI()
 
@@ -86,10 +89,10 @@ class LoginRequest(BaseModel):
 class Publicacao(BaseModel):
     email_aluno: EmailStr
     codigo_sala: str
-    tipo: Literal["duvida", "material", "exercicio"]
+    tipo: Literal["podcast", "fotografia", "tematica"]
     titulo: str
     conteudo: str
-    imagem: str | None = None
+    imagem: UploadFile = File(None)
 
 
 # Função para gerar código de sala
@@ -162,59 +165,72 @@ def login(usuario: LoginRequest):
         return {
             "mensagem": f"Login bem-sucedido. Bem-vindo, {resultado[0]}!",
             "cargo": resultado[2],
-            "sala": resultado[3]
+            "sala": resultado[3],
+            "email": usuario.email
         }
 
     raise HTTPException(status_code=401, detail="Email ou senha inválidos.")
 
 
-# Rota: Listar usuários
-@app.get("/usuarios")
-def listar_usuarios():
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-        cursor.execute("SELECT nome, email, cargo, sala FROM usuarios")
-        usuarios = cursor.fetchall()
-
-    return [{"nome": u[0], "email": u[1], "cargo": u[2], "sala": u[3]} for u in usuarios]
-
-
 # Rota: Criar publicação
 @app.post("/publicar")
-def criar_publicacao(pub: Publicacao):
+async def publicar(
+    email_aluno: str = Form(...),
+    codigo_sala: str = Form(...),
+    tipo: Literal["podcast", "fotografia", "tematica"] = Form(...),
+    titulo: str = Form(...),
+    conteudo: str = Form(...),
+    imagem: UploadFile = File(None)
+):
     try:
+        # Cria o diretório "uploads" se ele não existir
+        os.makedirs("uploads", exist_ok=True)
+
+        # Lógica para salvar imagem com nome único, se houver
+        caminho_arquivo = None
+        if imagem:
+            nome_unico = f"{uuid.uuid4().hex}_{imagem.filename}"  # Nome único
+            caminho_arquivo = f"uploads/{nome_unico}"
+            with open(caminho_arquivo, "wb") as buffer:
+                shutil.copyfileobj(imagem.file, buffer)
+
+        # Log para depuração
+        print(f"Procurando aluno com email: {email_aluno}")
+
+        # Verificar se o email do aluno é válido
         with sqlite3.connect(DB_FILE) as conn:
             cursor = conn.cursor()
-
-            # Verifica se a sala existe
-            cursor.execute("SELECT 1 FROM salas WHERE codigo = ?", (pub.codigo_sala,))
-            if not cursor.fetchone():
-                raise HTTPException(status_code=400, detail="Sala não encontrada.")
-
-            # Verifica se o aluno está na sala
-            cursor.execute(
-                "SELECT id FROM usuarios WHERE email = ? AND cargo = 'aluno' AND sala = ?",
-                (pub.email_aluno, pub.codigo_sala)
-            )
+            cursor.execute("SELECT id FROM usuarios WHERE email = ?", (email_aluno,))
             aluno = cursor.fetchone()
-            if not aluno:
-                raise HTTPException(status_code=400, detail="Aluno não encontrado na sala.")
 
-            id_aluno = aluno[0]
+            print(f"Resultado da busca por email: {aluno}")
 
-            # Insere a publicação
-            cursor.execute("""
-                INSERT INTO publicacoes (id_aluno, codigo_sala, tipo, titulo, conteudo, imagem)
-                VALUES (?, ?, ?, ?, ?, ?)
-            """, (id_aluno, pub.codigo_sala, pub.tipo, pub.titulo, pub.conteudo, pub.imagem))
+            if aluno is None:
+                raise HTTPException(status_code=400, detail="Aluno não encontrado com este email.")
 
+            # Inserir a publicação no banco de dados
+            cursor.execute(
+                "INSERT INTO publicacoes (id_aluno, codigo_sala, tipo, titulo, conteudo, imagem) "
+                "VALUES (?, ?, ?, ?, ?, ?)",
+                (aluno[0], codigo_sala, tipo, titulo, conteudo, caminho_arquivo)
+            )
             conn.commit()
 
-        return {"mensagem": "Publicação criada com sucesso."}
+        return {
+            "mensagem": "Publicação recebida com sucesso!",
+            "dados": {
+                "email_aluno": email_aluno,
+                "codigo_sala": codigo_sala,
+                "tipo": tipo,
+                "titulo": titulo,
+                "conteudo": conteudo,
+                "imagem": nome_unico if imagem else None
+            }
+        }
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Erro ao criar publicação: {str(e)}")
-
+        # Exibir a exceção para análise do erro
+        raise HTTPException(status_code=500, detail=f"Erro ao salvar publicação: {str(e)}")
 
 # Rota: Listar publicações de uma sala
 @app.get("/publicacoes/{codigo_sala}")

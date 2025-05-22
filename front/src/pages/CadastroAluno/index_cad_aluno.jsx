@@ -1,4 +1,4 @@
- import React, { useState } from 'react';
+import React, { useState } from 'react';
 import './styles_cad_aluno.css';
 import iconUser from '../../assets/user.png';
 import iconEmail from '../../assets/email.png';
@@ -41,8 +41,6 @@ const IndexCadAluno = () => {
       cargo: formData.cargo
     };
 
-    console.log("Enviando payload:", payload);
-
     try {
       const response = await fetch("http://127.0.0.1:8000/cadastrar", {
         method: "POST",
@@ -59,7 +57,7 @@ const IndexCadAluno = () => {
 
       const data = await response.json();
       alert(`Sucesso: ${data.mensagem}`);
-      navigate('/chat'); // redireciona após o cadastro
+      navigate('/home'); // ✅ redireciona para o chat ao cadastrar
     } catch (err) {
       alert(`Erro: ${err.message}`);
     }
@@ -67,12 +65,10 @@ const IndexCadAluno = () => {
 
   return (
     <div className="contener2">
-      {/* Imagem à esquerda */}
       <div className="imagem-lateral">
         <img src={eyesComDesc} alt="Imagem lateral" className="foto-lateral" />
       </div>
 
-      {/* Formulário à direita */}
       <div className="conteudo-direito">
         <div className="cabecalho-professor">
           <h2 className="titulo">
