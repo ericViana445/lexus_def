@@ -1,7 +1,7 @@
 import React from 'react';
 import './podcast.css';
 import Header from '../../components/header';
-import mascotePodcast from "../../assets/copinho.png"; // imagem temporária
+import mascotePodcast from "../../assets/copinho1.png"; // imagem temporária
 import uploadPodcast from '../../assets/EnviarPodcast.png'; // imagem correta
 
 const Podcast = () => {
