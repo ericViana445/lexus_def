@@ -1,116 +1,80 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <title>Cadastro de Usuário e Lista de Salas</title>
+    <title>Chat Privado</title>
 </head>
 <body>
-    <h1>Cadastro de Usuário</h1>
-    <form id="cadastroForm">
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
+    <h2>Chat Privado</h2>
 
-        <label for="email">Email:</label><br>
-        <input type="email" id="email" name="email" required><br><br>
+    <div>
+        <input id="email" placeholder="Seu Email" />
+        <input id="senha" type="password" placeholder="Sua Senha" />
+        <button onclick="login()">Login</button>
+    </div>
 
-        <label for="senha">Senha:</label><br>
-        <input type="password" id="senha" name="senha" required><br><br>
+    <div id="chatArea" style="display:none;">
+        <p id="userInfo"></p>
+        <input id="destinatario" placeholder="Email do destinatário" />
+        <button onclick="connect()">Conectar ao chat</button><br><br>
 
-        <label for="cargo">Cargo:</label><br>
-        <select id="cargo" name="cargo" required>
-            <option value="aluno">Aluno</option>
-            <option value="professor">Professor</option>
-        </select><br><br>
-
-        <div id="salaDiv" style="display:none;">
-            <label for="sala">Código da Sala:</label><br>
-            <input type="text" id="sala" name="sala"><br><br>
-        </div>
-
-        <button type="submit">Cadastrar</button>
-    </form>
-
-    <p id="mensagem"></p>
-
-    <hr>
-    <h2>Salas Cadastradas</h2>
-    <ul id="listaSalas"></ul>
+        <textarea id="chat" cols="100" rows="20" readonly></textarea><br>
+        <input id="messageText" placeholder="Digite sua mensagem" />
+        <button onclick="sendMessage()">Enviar</button>
+    </div>
 
     <script>
-        const form = document.getElementById("cadastroForm");
-        const cargoSelect = document.getElementById("cargo");
-        const salaDiv = document.getElementById("salaDiv");
+        let ws;
+        let meuEmail;
 
-        // Mostra/esconde o campo de sala dependendo do cargo
-        cargoSelect.addEventListener("change", () => {
-            salaDiv.style.display = cargoSelect.value === "aluno" ? "block" : "none";
-        });
+        function login() {
+            const email = document.getElementById("email").value;
+            const senha = document.getElementById("senha").value;
 
-        form.addEventListener("submit", async (e) => {
-            e.preventDefault();
-
-            const data = {
-                nome: form.nome.value,
-                email: form.email.value,
-                senha: form.senha.value,
-                cargo: form.cargo.value
-            };
-
-            if (data.cargo === "aluno") {
-                data.sala = form.sala.value;
-            }
-
-            const response = await fetch("http://localhost:8000/cadastrar", {
+            fetch("http://localhost:8000/login", {
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: JSON.stringify(data)
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({email, senha})
+            })
+            .then(response => {
+                if (!response.ok) throw new Error("Login inválido");
+                return response.json();
+            })
+            .then(data => {
+                meuEmail = data.email;
+                document.getElementById("userInfo").innerText = `Logado como ${meuEmail}`;
+                document.getElementById("chatArea").style.display = 'block';
+                alert("Login bem-sucedido");
+            })
+            .catch(error => {
+                alert(error);
             });
-
-            const resultado = await response.json();
-            const mensagemEl = document.getElementById("mensagem");
-
-            if (response.ok) {
-                mensagemEl.innerText = `✅ ${resultado.mensagem}`;
-                if (resultado.codigo_sala) {
-                    mensagemEl.innerText += `\nCódigo da sala: ${resultado.codigo_sala}`;
-                }
-                carregarSalas(); // Atualiza a lista após o cadastro
-            } else {
-                mensagemEl.innerText = `❌ Erro: ${resultado.detail}`;
-            }
-        });
-
-        async function carregarSalas() {
-            const lista = document.getElementById("listaSalas");
-            lista.innerHTML = "Carregando...";
-
-            try {
-                const response = await fetch("http://localhost:8000/salas");
-                const salas = await response.json();
-
-                if (salas.length === 0) {
-                    lista.innerHTML = "<li>Nenhuma sala cadastrada.</li>";
-                    return;
-                }
-
-                lista.innerHTML = "";
-                salas.forEach(sala => {
-                    const li = document.createElement("li");
-                    li.innerHTML = `<strong>Código:</strong> ${sala.codigo} |
-                                    <strong>Professor:</strong> ${sala.professor_nome} (${sala.professor_email})`;
-                    lista.appendChild(li);
-                });
-
-            } catch (err) {
-                lista.innerHTML = "<li>Erro ao carregar as salas.</li>";
-                console.error(err);
-            }
         }
 
-        // Carrega a lista ao abrir a página
-        carregarSalas();
+        function connect() {
+            const destinatario = document.getElementById("destinatario").value;
+            ws = new WebSocket(`ws://localhost:8000/ws/${meuEmail}/${destinatario}`);
+
+            ws.onopen = function() {
+                const chat = document.getElementById("chat");
+                chat.value += "🔗 Conectado ao chat\n";
+            };
+
+            ws.onmessage = function(event) {
+                const chat = document.getElementById("chat");
+                chat.value += event.data + "\n";
+            };
+
+            ws.onclose = function() {
+                const chat = document.getElementById("chat");
+                chat.value += "🔌 Desconectado do chat\n";
+            };
+        }
+
+        function sendMessage() {
+            const input = document.getElementById("messageText");
+            ws.send(input.value);
+            input.value = '';
+        }
     </script>
 </body>
 </html>

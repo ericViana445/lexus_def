@@ -4,7 +4,7 @@ import uuid
 import sqlite3
 import random
 import string
-from fastapi import FastAPI, HTTPException, UploadFile, Form, File
+from fastapi import FastAPI, HTTPException, UploadFile, Form, File, WebSocket, WebSocketDisconnect
 from pydantic import BaseModel, EmailStr, field_validator
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Literal
@@ -62,9 +62,64 @@ def inicializar_banco():
             )
         """)
 
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS mensagens (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                remetente TEXT NOT NULL,
+                destinatario TEXT NOT NULL,
+                mensagem TEXT NOT NULL,
+                lida INTEGER DEFAULT 0,
+                timestamp DATETIME DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (remetente) REFERENCES usuarios(email),
+                FOREIGN KEY (destinatario) REFERENCES usuarios(email)
+            )
+        """)
+
         conn.commit()
 
-inicializar_banco()
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS salas (
+                codigo TEXT PRIMARY KEY,
+                email_professor TEXT UNIQUE,
+                FOREIGN KEY (email_professor) REFERENCES usuarios(email)
+            )
+        """)
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS usuarios (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                nome TEXT NOT NULL,
+                email TEXT UNIQUE NOT NULL,
+                senha TEXT NOT NULL,
+                cargo TEXT CHECK(cargo IN ('professor', 'aluno')) NOT NULL,
+                sala TEXT,
+                FOREIGN KEY (sala) REFERENCES salas(codigo)
+            )
+        """)
+
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS publicacoes (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id_aluno INTEGER NOT NULL,
+                codigo_sala TEXT NOT NULL,
+                tipo TEXT NOT NULL,
+                titulo TEXT NOT NULL,
+                conteudo TEXT NOT NULL,
+                imagem TEXT,
+                data_criacao TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                FOREIGN KEY (id_aluno) REFERENCES usuarios(id),
+                FOREIGN KEY (codigo_sala) REFERENCES salas(codigo)
+            )
+        """)
+
+        conn.commit()
+
+@app.on_event("startup")
+def startup_event():
+    inicializar_banco()
 
 # Modelos
 class Usuario(BaseModel):
@@ -278,3 +333,144 @@ def listar_salas():
         }
         for codigo, nome, email in salas
     ]
+
+
+def verificar_usuario_existe(email):
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute(
+            "SELECT nome FROM usuarios WHERE email = ?",
+            (email,)
+        )
+        resultado = cursor.fetchone()
+
+    if resultado:
+        return resultado[0]  # Retorna o nome do usuário
+    return None
+
+
+#----------------------------------------CHAT----------------------------------------------
+# Marca mensagens como lidas
+def marcar_mensagens_como_lidas(ids):
+    if not ids:
+        return
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute(f"""
+            UPDATE mensagens
+            SET lida = 1
+            WHERE id IN ({','.join(['?']*len(ids))})
+        """, ids)
+        conn.commit()
+
+
+# Salva mensagem no banco
+def salvar_mensagem(remetente, destinatario, mensagem):
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO mensagens (remetente, destinatario, mensagem)
+            VALUES (?, ?, ?)
+        """, (remetente, destinatario, mensagem))
+        conn.commit()
+
+
+# Recupera mensagens não lidas
+def buscar_mensagens_nao_lidas(email):
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            SELECT id, remetente, mensagem, timestamp
+            FROM mensagens
+            WHERE destinatario = ? AND lida = 0
+            ORDER BY timestamp
+        """, (email,))
+        return cursor.fetchall()
+
+
+@app.websocket("/ws/{meu_email}/{destinatario_email}")
+async def websocket_chat_privado(websocket: WebSocket, meu_email: str, destinatario_email: str):
+    meu_nome = verificar_usuario_existe(meu_email)
+    destinatario_nome = verificar_usuario_existe(destinatario_email)
+
+    if not meu_nome or not destinatario_nome:
+        await websocket.close(code=1008)  # Usuário inválido
+        return
+
+    await manager.connect(meu_email, websocket)
+
+    # 🔥 Ao conectar, busca mensagens não lidas
+    mensagens_pendentes = buscar_mensagens_nao_lidas(meu_email)
+    if mensagens_pendentes:
+        ids = []
+        for msg in mensagens_pendentes:
+            id_msg, remetente, texto, timestamp = msg
+            await websocket.send_text(f"📩 [{timestamp}] {remetente}: {texto}")
+            ids.append(str(id_msg))
+        marcar_mensagens_como_lidas(ids)
+
+    await manager.notify_sender(meu_email, f"🟢 Conectado com {destinatario_nome}")
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+
+            # 🔥 Salvar no banco
+            salvar_mensagem(meu_nome, destinatario_nome, data)
+
+            try:
+                await manager.send_personal_message(meu_nome, destinatario_email, data)
+                await manager.notify_sender(meu_email, f"✅ Você: {data}")
+            except Exception:
+                await manager.notify_sender(meu_email, f"📥 Mensagem enviada para {destinatario_nome}. Ele irá ver quando entrar.")
+    except WebSocketDisconnect:
+        manager.disconnect(meu_email)
+        await manager.notify_sender(meu_email, "🔴 Você saiu do chat")
+    meu_nome = verificar_usuario_existe(meu_email)
+    destinatario_nome = verificar_usuario_existe(destinatario_email)
+
+    if not meu_nome or not destinatario_nome:
+        await websocket.close(code=1008)  # Usuário inválido
+        return
+
+    await manager.connect(meu_email, websocket)
+    await manager.notify_sender(meu_email, f"🟢 Conectado com {destinatario_nome}")
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            try:
+                await manager.send_personal_message(meu_nome, destinatario_email, data)
+                await manager.notify_sender(meu_email, f"✅ Você: {data}")
+            except Exception:
+                await manager.notify_sender(meu_email, f"⚠️ {destinatario_nome} não está conectado")
+    except WebSocketDisconnect:
+        manager.disconnect(meu_email)
+        await manager.notify_sender(meu_email, "🔴 Você saiu do chat")
+    nome = verificar_usuario(email, sala)
+
+    if not nome:
+        await websocket.close(code=1008)  # Código 1008 = Policy Violation (usuário não autorizado)
+        return
+
+    await manager.connect(sala, websocket)
+    await manager.broadcast(sala, f"🔵 {nome} entrou na sala {sala}")
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.broadcast(sala, f"💬 {nome}: {data}")
+    except WebSocketDisconnect:
+        manager.disconnect(sala, websocket)
+        await manager.broadcast(sala, f"🔴 {nome} saiu da sala {sala}")
+    await manager.connect(websocket)
+    await manager.broadcast(f"🔵 {usuario} entrou na sala {sala}")
+
+    try:
+        while True:
+            data = await websocket.receive_text()
+            await manager.broadcast(f"💬 {usuario}: {data}")
+    except WebSocketDisconnect:
+        manager.disconnect(websocket)
+        await manager.broadcast(f"🔴 {usuario} saiu da sala {sala}")
+
