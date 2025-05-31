@@ -325,6 +325,7 @@ async def publicar(
         # Exibir a exceção para análise do erro
         raise HTTPException(status_code=500, detail=f"Erro ao salvar publicação: {str(e)}")
 
+
 # Rota: Listar publicações de uma sala
 @app.get("/publicacoes/{codigo_sala}")
 def listar_publicacoes(codigo_sala: str):
@@ -367,8 +368,6 @@ def atualizar_nota(publicacao_id: int = Path(..., description="ID da publicaçã
     return {"mensagem": "Nota atualizada com sucesso", "publicacao_id": publicacao_id, "nota": nota}
 
 
-
-
 @app.get("/salas")
 def listar_salas():
     with sqlite3.connect(DB_FILE) as conn:
@@ -408,7 +407,6 @@ def verificar_usuario_existe(email):
 
 
 # Função: salvar a mensagem no banco de dados
-
 def salvar_mensagem(remetente: str, destinatario: str, mensagem: str):
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()

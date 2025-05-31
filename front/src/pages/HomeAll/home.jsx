@@ -25,6 +25,8 @@ useEffect(() => {
     setUser(userData)
   }, [navigate]) // ← Adicione navigate aqui
 
+
+  
   useEffect(() => {
     if (!user?.codigo_sala) return
     
