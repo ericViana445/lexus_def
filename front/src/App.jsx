@@ -12,6 +12,8 @@ import Tema from './pages/Tema/tema.jsx'
 import HomeAluno from './pages/HomeAluno/homeAluno.jsx';
 import Podcast from "./pages/Podcast/podcast.jsx";
 import Ler from './pages/Ler/ler.jsx'
+import { Path } from './../node_modules/@humanfs/core/src/path';
+import Fotografia from './pages/Fotorafia/fotografia';
 
 const App = () => {
   console.log("✅ App carregado");
@@ -30,6 +32,7 @@ const App = () => {
         <Route path="/homeAluno" element={<HomeAluno />} />
         <Route path="/podcast" element={<Podcast />} />
         <Route path="/lermais" element={<Ler />} />
+        <Route Path="/foto" element={<Fotografia/>} />
       </Routes>
     </BrowserRouter>
   );

@@ -1,57 +1,61 @@
 "use client"
-import { Link } from 'react-router-dom';
-import { useState } from "react"
+import { Link, useNavigate } from 'react-router-dom';
+import { useState, useEffect } from "react"
 import "./Home.css"
 import Header from '../../components/header'
 import avatar from '../../assets/avatar.png'
 import bannerMural from '../../assets/banner_mural.png'
 import sendIcon from '../../assets/send.png'
 
-// ✅ Importando as imagens reais das produções
-import prod1 from "../../assets/exempo_de_producao1.jpg"
-import prod2 from "../../assets/exempo_de_producao2.jpg"
-import prod3 from "../../assets/exempo_de_producao3.jpg"
-import prod4 from "../../assets/exempo_de_producao4.jpg"
-import prod5 from "../../assets/exempo_de_producao5.jpg"
-
 const placeholderAvatar = avatar
 
 const Home = () => {
   const [activeTab, setActiveTab] = useState("Turmas")
+  const [newsItems, setNewsItems] = useState([])
+  const [user, setUser] = useState(null)
+  const navigate = useNavigate()
 
-  const newsItems = [
-    {
-      id: 1,
-      title: "Hugo Calderano, o mesatenista brasileiro, venceu a Copa do Mundo de tênis de mesa em Macau, na China. Ele é o primeiro atleta não asiático ou europeu a conquistar o título.",
-      image: prod1,
-    },
-    {
-      id: 2,
-      title: "Povos indígenas marcham durante o acampamento anual Terra Livre, onde discutem direitos, proteção territorial e seu papel na COP30, que acontecerá pela primeira vez na Amazônia.",
-      image: prod2,
-    },
-    {
-      id: 3,
-      title: "Mulheres correm passando por barricadas da rua em chamas no distrito de Solino, em Porto Príncipe (Haiti), enquanto moradores pedem ajuda do governo e protestam contra a falta de segurança da cidade.",
-      image: prod3,
-    },
-    {
-      id: 4,
-      title: "Cientistas protestaram nos EUA contra os cortes de pessoal e restrições à pesquisa feitos por Trump. O caso se deve ao grande aumento de corte de gastos imposto pelo presidente",
-      image: prod4,
-    },
-    {
-      id: 5,
-      title: "Trabalhadores inspecionam danos à estrutura da usina de Chernobyl após ataque aéreo com drones. O avanço da tecnologia, propos o avanço em locais que nunca iriamos sem ela.",
-      image: prod5,
-    },
-  ]
+useEffect(() => {
+    // Verificar se há usuário logado
+    const userData = JSON.parse(localStorage.getItem("user"))
+    if (!userData) {
+      navigate('/login')
+      return
+    }
+    setUser(userData)
+  }, [navigate]) // ← Adicione navigate aqui
+
+  useEffect(() => {
+    if (!user?.codigo_sala) return
+    
+    const fetchPublicacoes = async () => {
+      try {
+        const response = await fetch(`http://localhost:8000/publicacoes/${user.codigo_sala}`);
+        const data = await response.json();
+        setNewsItems(data);
+      } catch (error) {
+        console.error("Erro ao buscar produções:", error);
+      }
+    };
+
+    if (activeTab === "Produções") {
+      fetchPublicacoes();
+    }
+  }, [activeTab, user?.codigo_sala]);
+
+  if (!user) {
+    return <div>Carregando...</div> // Ou um spinner de loading
+  }
+
+
+
+
 
   return (
     <div className="app-container">
       <Header 
-        nome="Gabriel" 
-        email="gabriel@email.br" 
+        nome={user.nome || "Usuário"}  
+        email={user.email || "email@teste.com"} 
         avatarImg={avatar} 
       />
 
@@ -153,17 +157,25 @@ const Home = () => {
 
           {activeTab === "Produções" && (
             <div className="news-grid">
-              {newsItems.map((item) => (
-                <div className="news-card" key={item.id}>
+              {newsItems.map((item, index) => (
+                <div className="news-card" key={index}>
                   <div className="news-image">
-                    <img src={item.image} alt="Notícia" />
+                    {item.imagem ? (
+                      <img src={`http://localhost:8000/${item.imagem}`} alt="Produção" />
+                    ) : (
+                      <img src={placeholderAvatar} alt="Sem imagem" />
+                    )}
                   </div>
                   <div className="news-content">
-                    <p>{item.title}</p>
+                    <p><strong>{item.titulo}</strong></p>
+                    <p>{item.conteudo}</p>
+                    <p><em>Tipo: {item.tipo}</em></p>
+                    <p><small>Por: {item.aluno} em {new Date(item.data_criacao).toLocaleDateString()}</small></p>
                     <Link to="/lermais" className="read-more-btn">Ler mais</Link>
                   </div>
                 </div>
               ))}
+
             </div>
           )}
         </div>

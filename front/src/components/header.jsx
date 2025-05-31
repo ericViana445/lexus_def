@@ -1,52 +1,73 @@
-import { useState } from 'react';
-import { Link } from 'react-router-dom';
+// src/components/header/Header.jsx
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './header.css';
 import logoBarra from '../assets/lexus_logo_barra.png';
-import avatar from '../assets/perfil.png';
-import './header.css'; // ideal separar o css do header em outro arquivo
+import avatarImg from '../assets/perfil.png'; // Imagem padrão
 
-function Header() {
+const Header = ({ nome, email }) => {
   const [perfilAberto, setPerfilAberto] = useState(false);
+  const navigate = useNavigate();
+
+  const handleLogout = (e) => {
+    e.stopPropagation(); // Impede que o evento se propague
+    localStorage.removeItem("user");
+    navigate('/login');
+  };
+
+  const togglePerfil = (e) => {
+    e.stopPropagation(); // Impede que o evento se propague
+    setPerfilAberto(!perfilAberto);
+  };
+
+  // Fechar dropdown ao clicar em qualquer lugar fora dele
+  React.useEffect(() => {
+    const closePerfil = () => setPerfilAberto(false);
+    window.addEventListener('click', closePerfil);
+    return () => window.removeEventListener('click', closePerfil);
+  }, []);
 
   return (
     <header className="header">
       <div className="logo">
-        <Link to="/">
-          <img src={logoBarra} alt="Logo Lexus" />
-        </Link>
+        <img src={logoBarra} alt="Logo Lexus" />
       </div>
       <nav>
-        <Link to="/home">Home</Link>
-
+        <a href="/home">Home</a>
         <div className="produzir-container">
           <span className="produzir-toggle">Produzir ▼</span>
           <div className="produzir-menu">
-            <Link to="/fotografia">Fotografia</Link>
-            <Link to="/podcast">Podcast</Link>
-            <Link to="/tema">Tema Proposto</Link>
+            <a href="/foto">Fotografia</a>
+            <a href="/podcast">Podcast</a>
+            <a href="/tema">Tema Proposto</a>
           </div>
         </div>
+        <a href="/chat">Chat</a>
 
-        <Link to="/chat">Chat</Link>
-
-        <div className="perfil-container" onClick={() => setPerfilAberto(!perfilAberto)}>
+        <div className="perfil-container" onClick={togglePerfil}>
           <span className="perfil-toggle">Perfil</span>
           {perfilAberto && (
-            <div className="perfil-dropdown">
+            <div className="perfil-dropdown" onClick={e => e.stopPropagation()}>
               <div className="perfil-info">
-                <img src={avatar} alt="Avatar" className="perfil-avatar" />
+                <img src={avatarImg} alt="Avatar" className="perfil-avatar" />
                 <div>
-                  <strong>Seu Nome</strong>
-                  <p>seu@email.com</p>
+                  <strong>{nome || "Usuário"}</strong>
+                  <p>{email || "email@exemplo.com"}</p>
                 </div>
               </div>
               <hr />
-              <button className="sair-botao">Sair</button>
+              <button 
+                className="sair-botao" 
+                onClick={handleLogout}
+              >
+                Sair
+              </button>
             </div>
           )}
         </div>
       </nav>
     </header>
   );
-}
+};
 
 export default Header;

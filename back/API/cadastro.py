@@ -1,13 +1,15 @@
+import asyncio
 import os
 import shutil
 import uuid
 import sqlite3
 import random
 import string
-from fastapi import FastAPI, HTTPException, UploadFile, Form, File, WebSocket, WebSocketDisconnect
+from fastapi import FastAPI, HTTPException, UploadFile, Form, File, WebSocket, WebSocketDisconnect, Path, BackgroundTasks
 from pydantic import BaseModel, EmailStr, field_validator
 from fastapi.middleware.cors import CORSMiddleware
 from typing import Literal
+
 
 app = FastAPI()
 
@@ -114,6 +116,11 @@ def inicializar_banco():
                 FOREIGN KEY (codigo_sala) REFERENCES salas(codigo)
             )
         """)
+        cursor.execute("PRAGMA table_info(publicacoes)")
+        colunas = [col[1] for col in cursor.fetchall()]
+        if "nota" not in colunas:
+            cursor.execute("ALTER TABLE publicacoes ADD COLUMN nota REAL DEFAULT NULL")
+
 
         conn.commit()
 
@@ -148,6 +155,36 @@ class Publicacao(BaseModel):
     titulo: str
     conteudo: str
     imagem: UploadFile = File(None)
+
+
+class ConnectionManager:
+    def __init__(self):
+        self.active_connections: dict[str, WebSocket] = {}
+
+    async def connect(self, user_email: str, websocket: WebSocket):
+        await websocket.accept()
+        self.active_connections[user_email] = websocket
+
+    def disconnect(self, user_email: str):
+        self.active_connections.pop(user_email, None)
+
+    async def send_personal_message(self, sender_name: str, recipient_email: str, message: str):
+        recipient_ws = self.active_connections.get(recipient_email)
+        if recipient_ws:
+            try:
+                await recipient_ws.send_text(f"💬 {sender_name}: {message}")
+            except Exception as e:
+                print(f"Erro ao enviar mensagem: {e}")
+
+    async def notify_sender(self, sender_email: str, message: str):
+        sender_ws = self.active_connections.get(sender_email)
+        if sender_ws:
+            try:
+                await sender_ws.send_text(f"💬 Você: {message}")
+            except Exception as e:
+                print(f"Erro ao notificar remetente: {e}")
+
+manager = ConnectionManager()
 
 
 # Função para gerar código de sala
@@ -219,8 +256,9 @@ def login(usuario: LoginRequest):
     if resultado and resultado[1] == usuario.senha:
         return {
             "mensagem": f"Login bem-sucedido. Bem-vindo, {resultado[0]}!",
+            "nome": resultado[0],  # ✅ aqui!
             "cargo": resultado[2],
-            "sala": resultado[3],
+            "codigo_sala": resultado[3],  # ✅ padronize o nome como está no frontend
             "email": usuario.email
         }
 
@@ -314,6 +352,23 @@ def listar_publicacoes(codigo_sala: str):
     ]
 
 
+@app.patch("/publicacoes/{publicacao_id}/nota")
+def atualizar_nota(publicacao_id: int = Path(..., description="ID da publicação"),
+                   nota: float = Form(..., ge=0, le=10)):  # Exemplo: nota de 0 a 10
+    with sqlite3.connect(DB_FILE) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT id FROM publicacoes WHERE id = ?", (publicacao_id,))
+        if cursor.fetchone() is None:
+            raise HTTPException(status_code=404, detail="Publicação não encontrada")
+
+        cursor.execute("UPDATE publicacoes SET nota = ? WHERE id = ?", (nota, publicacao_id))
+        conn.commit()
+
+    return {"mensagem": "Nota atualizada com sucesso", "publicacao_id": publicacao_id, "nota": nota}
+
+
+
+
 @app.get("/salas")
 def listar_salas():
     with sqlite3.connect(DB_FILE) as conn:
@@ -350,22 +405,11 @@ def verificar_usuario_existe(email):
 
 
 #----------------------------------------CHAT----------------------------------------------
-# Marca mensagens como lidas
-def marcar_mensagens_como_lidas(ids):
-    if not ids:
-        return
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-        cursor.execute(f"""
-            UPDATE mensagens
-            SET lida = 1
-            WHERE id IN ({','.join(['?']*len(ids))})
-        """, ids)
-        conn.commit()
 
 
-# Salva mensagem no banco
-def salvar_mensagem(remetente, destinatario, mensagem):
+# Função: salvar a mensagem no banco de dados
+
+def salvar_mensagem(remetente: str, destinatario: str, mensagem: str):
     with sqlite3.connect(DB_FILE) as conn:
         cursor = conn.cursor()
         cursor.execute("""
@@ -374,103 +418,49 @@ def salvar_mensagem(remetente, destinatario, mensagem):
         """, (remetente, destinatario, mensagem))
         conn.commit()
 
+# Função: checar novas mensagens e emitir sinais de atualização
+async def verificar_novas_mensagens():
+    while True:
+        await asyncio.sleep(1)  # checar a cada 1 segundo
+        with sqlite3.connect(DB_FILE) as conn:
+            cursor = conn.cursor()
+            cursor.execute("""
+                SELECT id, remetente, destinatario, mensagem FROM mensagens
+                WHERE lida = 0
+            """)
+            mensagens = cursor.fetchall()
 
-# Recupera mensagens não lidas
-def buscar_mensagens_nao_lidas(email):
-    with sqlite3.connect(DB_FILE) as conn:
-        cursor = conn.cursor()
-        cursor.execute("""
-            SELECT id, remetente, mensagem, timestamp
-            FROM mensagens
-            WHERE destinatario = ? AND lida = 0
-            ORDER BY timestamp
-        """, (email,))
-        return cursor.fetchall()
+            for id_msg, remetente, destinatario, msg in mensagens:
+                asyncio.create_task(manager.send_personal_message(remetente, destinatario, msg))
+                cursor.execute("UPDATE mensagens SET lida = 1 WHERE id = ?", (id_msg,))
+            conn.commit()
 
+@app.on_event("startup")
+async def startup_event():
+    inicializar_banco()
+    asyncio.create_task(verificar_novas_mensagens())
 
-@app.websocket("/ws/{meu_email}/{destinatario_email}")
-async def websocket_chat_privado(websocket: WebSocket, meu_email: str, destinatario_email: str):
-    meu_nome = verificar_usuario_existe(meu_email)
-    destinatario_nome = verificar_usuario_existe(destinatario_email)
-
-    if not meu_nome or not destinatario_nome:
-        await websocket.close(code=1008)  # Usuário inválido
-        return
-
+@app.websocket("/ws/{meu_email}")
+async def websocket_chat(websocket: WebSocket, meu_email: str):
     await manager.connect(meu_email, websocket)
 
-    # 🔥 Ao conectar, busca mensagens não lidas
-    mensagens_pendentes = buscar_mensagens_nao_lidas(meu_email)
-    if mensagens_pendentes:
-        ids = []
-        for msg in mensagens_pendentes:
-            id_msg, remetente, texto, timestamp = msg
-            await websocket.send_text(f"📩 [{timestamp}] {remetente}: {texto}")
-            ids.append(str(id_msg))
-        marcar_mensagens_como_lidas(ids)
-
-    await manager.notify_sender(meu_email, f"🟢 Conectado com {destinatario_nome}")
-
     try:
         while True:
             data = await websocket.receive_text()
+            if ":" not in data:
+                await websocket.send_text("Erro: Mensagem deve seguir o formato 'destinatario: mensagem'")
+                continue
 
-            # 🔥 Salvar no banco
-            salvar_mensagem(meu_nome, destinatario_nome, data)
+            destinatario, mensagem = map(str.strip, data.split(":", 1))
 
-            try:
-                await manager.send_personal_message(meu_nome, destinatario_email, data)
-                await manager.notify_sender(meu_email, f"✅ Você: {data}")
-            except Exception:
-                await manager.notify_sender(meu_email, f"📥 Mensagem enviada para {destinatario_nome}. Ele irá ver quando entrar.")
+            # Salva no banco
+            salvar_mensagem(meu_email, destinatario, mensagem)
+
+            # Notifica o remetente que foi salvo
+            await manager.notify_sender(meu_email, mensagem)
+
     except WebSocketDisconnect:
         manager.disconnect(meu_email)
-        await manager.notify_sender(meu_email, "🔴 Você saiu do chat")
-    meu_nome = verificar_usuario_existe(meu_email)
-    destinatario_nome = verificar_usuario_existe(destinatario_email)
-
-    if not meu_nome or not destinatario_nome:
-        await websocket.close(code=1008)  # Usuário inválido
-        return
-
-    await manager.connect(meu_email, websocket)
-    await manager.notify_sender(meu_email, f"🟢 Conectado com {destinatario_nome}")
-
-    try:
-        while True:
-            data = await websocket.receive_text()
-            try:
-                await manager.send_personal_message(meu_nome, destinatario_email, data)
-                await manager.notify_sender(meu_email, f"✅ Você: {data}")
-            except Exception:
-                await manager.notify_sender(meu_email, f"⚠️ {destinatario_nome} não está conectado")
-    except WebSocketDisconnect:
+    except Exception as e:
+        print(f"Erro WebSocket ({meu_email}):", e)
         manager.disconnect(meu_email)
-        await manager.notify_sender(meu_email, "🔴 Você saiu do chat")
-    nome = verificar_usuario(email, sala)
-
-    if not nome:
-        await websocket.close(code=1008)  # Código 1008 = Policy Violation (usuário não autorizado)
-        return
-
-    await manager.connect(sala, websocket)
-    await manager.broadcast(sala, f"🔵 {nome} entrou na sala {sala}")
-
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await manager.broadcast(sala, f"💬 {nome}: {data}")
-    except WebSocketDisconnect:
-        manager.disconnect(sala, websocket)
-        await manager.broadcast(sala, f"🔴 {nome} saiu da sala {sala}")
-    await manager.connect(websocket)
-    await manager.broadcast(f"🔵 {usuario} entrou na sala {sala}")
-
-    try:
-        while True:
-            data = await websocket.receive_text()
-            await manager.broadcast(f"💬 {usuario}: {data}")
-    except WebSocketDisconnect:
-        manager.disconnect(websocket)
-        await manager.broadcast(f"🔴 {usuario} saiu da sala {sala}")
-
