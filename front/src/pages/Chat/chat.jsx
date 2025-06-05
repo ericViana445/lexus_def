@@ -6,12 +6,7 @@ import iconeEnviar from '../../assets/send.png';
 import avatar from '../../assets/perfil.png';
 
 const initialConversations = {
-  George: [
-    { sender: 'right', text: 'Olá! Envie sua produção aqui.' },
-    { sender: 'right', text: 'Você pode mandar áudio, texto ou imagem.' },
-    { sender: 'left', text: 'Tudo bem, estou escrevendo agora.' },
-    { sender: 'left', text: 'Vai ser sobre meio ambiente!' }
-  ],
+  George: [],
   Mônica: [],
   Charles: [],
   Paloma: [],
@@ -24,10 +19,11 @@ function Chat() {
   const [inputText, setInputText] = useState('');
   const [ws, setWs] = useState(null);
   const messagesRef = useRef(null);
+  const username = 'Gabriel'; // Nome fixo neste exemplo
 
-  // Configurar WebSocket quando componente monta
   useEffect(() => {
-    const socket = new WebSocket('ws://localhost:8000/ws/gabriel@email.br');
+    const socket = new WebSocket(`ws://localhost:8000/ws/${username}`);
+
     socket.onopen = () => {
       console.log('WebSocket conectado');
     };
@@ -35,13 +31,14 @@ function Chat() {
     socket.onmessage = (event) => {
       try {
         const data = JSON.parse(event.data);
-        const { sender, destinatario, conteudo } = data;
-        // Verifica se a mensagem é para este usuário (Gabriel)
-        if (destinatario === 'Gabriel') {
+        const { content, sender, system } = data;
+
+        // Ignora mensagens do sistema e as que o próprio usuário enviou
+        if (!system && sender && sender !== username) {
           setConversations(prev => {
             const updates = { ...prev };
             if (!updates[sender]) updates[sender] = [];
-            updates[sender] = [...updates[sender], { sender: 'left', text: conteudo }];
+            updates[sender] = [...updates[sender], { sender: 'left', text: content }];
             return updates;
           });
         }
@@ -59,20 +56,18 @@ function Chat() {
 
   const sendMessage = () => {
     if (!inputText.trim()) return;
+
     // Atualiza UI localmente
     setConversations(prev => ({
       ...prev,
       [currentContact]: [...prev[currentContact], { sender: 'right', text: inputText }]
     }));
-    // Envia via WebSocket
+
+    // Envia mensagem como texto puro
     if (ws && ws.readyState === WebSocket.OPEN) {
-      const mensagem = {
-        sender: 'Gabriel',
-        destinatario: currentContact,
-        conteudo: inputText
-      };
-      ws.send(JSON.stringify(mensagem));
+      ws.send(inputText);
     }
+
     setInputText('');
   };
 
@@ -85,7 +80,7 @@ function Chat() {
   return (
     <div className="chat-page">
       <Header
-        nome="Gabriel"
+        nome={username}
         email="gabriel@email.br"
         avatarImg={avatar}
       />

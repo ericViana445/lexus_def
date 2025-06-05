@@ -23,7 +23,8 @@ html {
 .imagem-lateral {
     width: 70%;
     height: 100%;
-    overflow: hidden; /* ✅ Impede transbordamento indesejado */
+    overflow: hidden;
+    /* ✅ Impede transbordamento indesejado */
 }
 
 .foto-lateral {
